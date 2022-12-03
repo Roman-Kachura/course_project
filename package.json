@@ -1,6 +1,6 @@
 {
-  "name": "client",
-  "homepage": "",
+  "name": "course_project",
+  "homepage": "https://roman-kachura.github.io/course_project/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
