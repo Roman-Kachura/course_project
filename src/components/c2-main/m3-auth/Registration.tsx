@@ -4,8 +4,8 @@ import Form from 'react-bootstrap/Form';
 import {Button} from 'react-bootstrap';
 import {Formik} from 'formik';
 import {Navigate, NavLink} from 'react-router-dom';
-import {RootState, useAppDispatch} from '../../store/store';
-import {registrationThunk} from '../../store/reducers/authReducer';
+import {RootState, useAppDispatch} from '../../../store/store';
+import {registrationThunk} from '../../../store/reducers/authReducer';
 import {useSelector} from 'react-redux';
 
 export const Registration: React.FC = () => {

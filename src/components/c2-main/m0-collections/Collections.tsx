@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Content:React.FC = () => {
+export const Collections:React.FC = () => {
     return(
         <div>
             content

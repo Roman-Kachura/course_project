@@ -28,7 +28,12 @@ export const Header: React.FC = () => {
                             <h6 className={style.name}>{user.name}</h6>
                         </div>
                     }
-                    <NavLink className={style.link} to="/content">Reviews</NavLink>
+                    <Navbar.Collapse className={style.collapse}>
+                        <NavDropdown title="Collections" className={style.dropdown}>
+                            <NavDropdown.Item className={style.dropdownItem} href="/create-collection">Create
+                                collection</NavDropdown.Item>
+                        </NavDropdown>
+                    </Navbar.Collapse>
                 </div>
                 <Navbar className={style.navbar}>
                     <Form>
@@ -41,9 +46,15 @@ export const Header: React.FC = () => {
                     {user
                         ? <Navbar.Collapse className={style.collapse}>
                             <Nav className={style.nav}>
-                                <NavDropdown title="OPTIONS" className={style.dropdown}>
-                                    {user.role === 'ADMIN' && <NavDropdown.Item className={style.dropdownItem}
-                                                                                href="/users">Users</NavDropdown.Item>}
+                                <NavDropdown title="Options" className={style.dropdown}>
+                                    {user.role === 'ADMIN' &&
+                                        <NavDropdown.Item className={style.dropdownItem} href="/create-collection">Create
+                                            collection</NavDropdown.Item>
+                                    }
+                                    {user.role === 'ADMIN' &&
+                                        <NavDropdown.Item className={style.dropdownItem}
+                                                          href="/users">Users</NavDropdown.Item>
+                                    }
                                     <NavDropdown.Item className={style.dropdownItem}
                                                       href="/setting">Setting</NavDropdown.Item>
                                     <NavDropdown.Divider/>

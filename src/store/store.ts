@@ -2,6 +2,7 @@ import {configureStore} from '@reduxjs/toolkit';
 import thunkMiddleware from 'redux-thunk';
 import authReducer from './reducers/authReducer';
 import {useDispatch} from 'react-redux';
+import usersReducer from './reducers/usersReducer';
 
 const loadedState = () => {
     const state = localStorage.getItem('app');
@@ -13,7 +14,8 @@ const loadedState = () => {
 }
 export const store = configureStore({
     reducer: {
-        auth: authReducer
+        auth: authReducer,
+        users:usersReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunkMiddleware),
     preloadedState: loadedState()

@@ -1,0 +1,9 @@
+import {$api} from './api';
+import {AxiosResponse} from 'axios';
+import {UserResponseType} from './authApi';
+
+export const usersApi = {
+    getUsers(currentPage?:number) {
+        return $api.get<AxiosResponse, AxiosResponse<UserResponseType>>(`/users?page=${currentPage}`)
+    }
+}
