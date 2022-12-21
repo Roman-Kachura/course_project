@@ -3,21 +3,33 @@ import {RootState, useAppDispatch} from '../../../store/store';
 import {getUsersThunk, UserInitialStateType} from '../../../store/reducers/usersReducer';
 import {useSelector} from 'react-redux';
 import {UserResponseType} from '../../../api/authApi';
-import {Pagination, Table} from 'react-bootstrap';
+import {Table} from 'react-bootstrap';
 import style from './Users.module.scss';
-import {NavLink} from 'react-router-dom';
+import {Navigate, NavLink} from 'react-router-dom';
 import {AppPagination} from '../../с9-additions/AppPagination';
 
-export const Users: React.FC = () => {
+
+export const Users = React.memo(() => {
     const dispatch = useAppDispatch();
-    const {data, currentPage, pagesCount} = useSelector<RootState, UserInitialStateType>(state => state.users);
+    const {users, currentPage, pagesCount} = useSelector<RootState, UserInitialStateType>(state => state.usersReducer);
+    const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
     const getUsers = (currentPage: number = 1) => {
         dispatch(getUsersThunk({currentPage}));
     }
-
+    if (!user || user.role !== 'ADMIN') return <Navigate to="/"/>
+    return <UsersComponent
+        user={user}
+        data={users}
+        currentPage={currentPage}
+        pagesCount={pagesCount}
+        getUsers={getUsers}
+    />
+});
+const UsersComponent: React.FC<UsersComponentType> = ({data, getUsers, pagesCount, currentPage, user}) => {
     useEffect(() => {
         getUsers();
-    }, [])
+    }, []);
+
     return (
         <div className={style.users}>
             <Table striped bordered hover variant="dark">
@@ -45,4 +57,12 @@ export const Users: React.FC = () => {
             <AppPagination pagesCount={pagesCount} currentPage={currentPage} callBack={getUsers}/>
         </div>
     )
+}
+
+type UsersComponentType = {
+    getUsers: () => void
+    data: UserResponseType[]
+    user: UserResponseType
+    pagesCount: number
+    currentPage: number
 }

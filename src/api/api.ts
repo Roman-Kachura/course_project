@@ -8,7 +8,7 @@ export const $api = axios.create({
 $api.interceptors.request.use((config: AxiosRequestConfig) => {
     const app = localStorage.getItem('app');
     if (app) {
-        const token = JSON.parse(app).auth.data.token;
+        const token = JSON.parse(app).authReducer.data.token;
         config.headers = {
             Authorization: `Bearer ${token}`
         }

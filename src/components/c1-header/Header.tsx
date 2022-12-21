@@ -9,7 +9,7 @@ import Form from 'react-bootstrap/Form';
 import {NavLink} from 'react-router-dom';
 
 export const Header: React.FC = () => {
-    const user = useSelector<RootState, UserResponseType>(state => state.auth.data.user);
+    const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
     const dispatch = useAppDispatch();
     const logout = (e: MouseEvent<HTMLElement>) => {
         e.preventDefault();
@@ -29,8 +29,8 @@ export const Header: React.FC = () => {
                         </div>
                     }
                     <Navbar.Collapse className={style.collapse}>
-                        <NavDropdown title="Collections" className={style.dropdown}>
-                            <NavDropdown.Item className={style.dropdownItem} href="/create-collection">Create
+                        <NavDropdown title="Reviews" className={style.dropdown}>
+                            <NavDropdown.Item className={style.dropdownItem} href="/create-categories">Create
                                 collection</NavDropdown.Item>
                         </NavDropdown>
                     </Navbar.Collapse>
@@ -48,8 +48,8 @@ export const Header: React.FC = () => {
                             <Nav className={style.nav}>
                                 <NavDropdown title="Options" className={style.dropdown}>
                                     {user.role === 'ADMIN' &&
-                                        <NavDropdown.Item className={style.dropdownItem} href="/create-collection">Create
-                                            collection</NavDropdown.Item>
+                                        <NavDropdown.Item className={style.dropdownItem} href="/create-category">Create
+                                            category</NavDropdown.Item>
                                     }
                                     {user.role === 'ADMIN' &&
                                         <NavDropdown.Item className={style.dropdownItem}

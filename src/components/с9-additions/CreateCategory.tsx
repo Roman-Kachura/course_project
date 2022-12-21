@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const CreateCollection:React.FC = () => {
+export const CreateCategory:React.FC = () => {
     return(
         <div>
             CreateCollection

@@ -9,7 +9,7 @@ import {registrationThunk} from '../../../store/reducers/authReducer';
 import {useSelector} from 'react-redux';
 
 export const Registration: React.FC = () => {
-    const isAuth = useSelector<RootState,boolean>(state => state.auth.isAuth);
+    const isAuth = useSelector<RootState,boolean>(state => state.authReducer.isAuth);
     if(isAuth) return <Navigate to={'/content'}/>
     return (
         <div className={style.auth}>

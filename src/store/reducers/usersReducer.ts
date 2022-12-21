@@ -3,7 +3,7 @@ import {UserResponseType} from '../../api/authApi';
 import {usersApi} from '../../api/usersApi';
 
 const usersInitialState: UserInitialStateType = {
-    data: [] as UserResponseType[],
+    users: [] as UserResponseType[],
     currentPage:1,
     pagesCount:1
 }
@@ -17,23 +17,23 @@ export const getUsersThunk = createAsyncThunk('get-users', async (arg:{currentPa
     }
 });
 
-const authSlice = createSlice({
+const usersSlice = createSlice({
     name: 'users',
     initialState: usersInitialState,
     reducers: {
         setUsersState(state, action) {
-            state.data = action.payload.users;
+            state.users = action.payload.users;
             state.currentPage = +action.payload.currentPage;
             state.pagesCount = action.payload.pagesCount;
         }
     }
 });
 
-const {setUsersState} = authSlice.actions;
+const {setUsersState} = usersSlice.actions;
 
-export default authSlice.reducer;
+export default usersSlice.reducer;
 export type UserInitialStateType = {
-    data: UserResponseType[]
+    users: UserResponseType[]
     currentPage:number
     pagesCount:number
 }

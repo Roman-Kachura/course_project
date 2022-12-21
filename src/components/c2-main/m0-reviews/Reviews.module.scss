@@ -1,0 +1,44 @@
+.reviews{
+  padding:50px 0;
+  min-height: 90%;
+  width: 100%;
+  overflow-y: auto;
+
+  .container{
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 4%;
+
+    .item{
+      width: 22%;
+      margin-bottom: 50px;
+
+      .image{
+        width: 100%;
+        max-height: 400px;
+        object-fit: cover;
+      }
+
+      .caption{
+        margin-top: 5px;
+        .link{
+          font-size: 16px;
+          text-decoration: none;
+          color:#000;
+          transition: .3s;
+
+          &:hover{
+            color: #036f8c;
+          }
+        }
+      }
+      .rating{
+        font-size: 18px;
+        margin-top: 5px;
+      }
+    }
+  }
+}
