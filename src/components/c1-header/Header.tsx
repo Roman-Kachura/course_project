@@ -5,7 +5,6 @@ import {useSelector} from 'react-redux';
 import {RootState, useAppDispatch} from '../../store/store';
 import {UserResponseType} from '../../api/authApi';
 import {logoutThunk} from '../../store/reducers/authReducer';
-import Form from 'react-bootstrap/Form';
 import {NavLink} from 'react-router-dom';
 
 export const Header: React.FC = () => {
@@ -36,13 +35,6 @@ export const Header: React.FC = () => {
                     </Navbar.Collapse>
                 </div>
                 <Navbar className={style.navbar}>
-                    <Form>
-                        <Form.Control
-                            type="search"
-                            placeholder="Search"
-                            className="me-2"
-                        />
-                    </Form>
                     {user
                         ? <Navbar.Collapse className={style.collapse}>
                             <Nav className={style.nav}>

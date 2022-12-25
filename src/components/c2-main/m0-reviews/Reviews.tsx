@@ -2,59 +2,52 @@ import React, {useEffect} from 'react';
 import {RootState, useAppDispatch} from '../../../store/store';
 import {getReviewsThunk, ReviewsInitialStateType} from '../../../store/reducers/reviewsReducer';
 import {useSelector} from 'react-redux';
-import {Figure} from 'react-bootstrap';
 import style from './Reviews.module.scss';
-import {NavLink} from 'react-router-dom';
-import {Rating} from '@mui/material';
+import {AppPagination} from '../../с9-additions/AppPagination';
+import {SearchPanel} from './SearchPanel';
+import {ReviewCover} from './ReviewCover';
+import {SearchType} from '../../../api/reviewApi';
 
 export const Reviews = React.memo(() => {
     const dispatch = useAppDispatch();
-    const reviewsReducer = useSelector<RootState, ReviewsInitialStateType>(state => state.reviewReducer);
+    const getReviews = (currentPage: number, search: SearchType) => dispatch(getReviewsThunk({currentPage, search}));
+    const changePage = (currentPage: number) => dispatch(getReviewsThunk({currentPage, search}));
+    const changeSearchValue = (search: SearchType) => dispatch(getReviewsThunk({currentPage: 1, search}));
+    const hashtagSearch = (hashtag: string) => dispatch(getReviewsThunk({
+        currentPage: 1,
+        search: {...search, value: hashtag}
+    }));
+    const {
+        reviews,
+        categories,
+        sort,
+        pagesCount,
+        currentPage,
+        search
+    }
+        = useSelector<RootState, ReviewsInitialStateType>(state => state.reviewReducer);
     useEffect(() => {
-        dispatch(getReviewsThunk());
-    }, []);
+        getReviews(1, search);
+    }, [dispatch]);
+
     return (
         <div className={style.reviews}>
+            <SearchPanel categories={categories} sort={sort} callBack={changeSearchValue}/>
             <div className={style.container}>
-                {
-                    reviewsReducer.reviews.map(
-                        r => <ReviewCover
-                            key={r.id}
-                            id={r.id}
-                            src={r.image}
-                            rating={r.rating}
-                            title={r.title}
-                        />
-                    )
-                }
+                {reviews.map(r => <ReviewCover key={r.id} id={r.id} src={r.image} rating={r.rating} title={r.title}
+                                               hashtags={r.hashtags} hashtagSearch={hashtagSearch}/>)}
+            </div>
+            <div className={style.pagination}>
+                <AppPagination
+                    pagesCount={pagesCount}
+                    currentPage={currentPage}
+                    callBack={changePage}
+                />
             </div>
         </div>
     )
 });
 
-const ReviewCover: React.FC<ReviewCoverPropsType> = ({src, id, title, rating}) => {
-    return (
-        <Figure className={style.item}>
-            <NavLink to={`/review/${id}`}>
-                <Figure.Image
-                    className={style.image}
-                    alt={title}
-                    src={src}
-                />
-            </NavLink>
-            <div><Rating className={style.rating} value={rating} readOnly/></div>
-            <Figure.Caption className={style.caption}>
-                <NavLink to={`/review/${id}`} className={style.link}>
-                    {title}
-                </NavLink>
-            </Figure.Caption>
-        </Figure>
-    );
-}
 
-type ReviewCoverPropsType = {
-    src: string
-    id: string
-    rating: number
-    title: string
-}
+
+
