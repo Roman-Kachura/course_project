@@ -8,12 +8,16 @@ export const reviewApi = {
         const hashtag = value.charAt(0) === '#' ? value.slice(1) : '';
         const url = `/reviews?currentPage=${currentPage}&sort=${sort}&category=${category}&search=${searchValue}&hashtags=${hashtag}`;
         return $api.get<AxiosResponse, AxiosResponse<ReviewResponseType>>(url)
+    },
+    getReviewsItem(id: string) {
+        return $api.get<AxiosResponse, AxiosResponse<ReviewType>>(`/reviews/${id}`);
     }
 }
 
 export type ReviewType = {
     id: string,
     title: string,
+    author: string
     authorID: string,
     text: string,
     rating: number,
@@ -36,5 +40,5 @@ export type SearchType = {
     value: string
     category: string
     sort: string
-    hashtags?:string
+    hashtags?: string
 }

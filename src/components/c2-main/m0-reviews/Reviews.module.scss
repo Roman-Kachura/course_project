@@ -1,36 +1,39 @@
-.reviews{
-  padding:50px 0;
+.reviews {
+  padding: 50px 0;
   min-height: 90%;
   width: 100%;
   overflow-y: auto;
 
-  .pagination{
+  .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .form{
+  .form {
     display: flex;
     justify-content: start;
     align-items: center;
     margin-bottom: 50px;
-    .select{
+
+    .select {
       width: 200px;
       height: 40px;
       margin-right: 20px;
     }
-    .input{
+
+    .input {
       width: 300px;
       height: 40px;
       margin-right: 20px;
     }
-    .searchBtn{
+
+    .searchBtn {
       height: 40px;
     }
   }
 
-  .container{
+  .container {
     width: 100%;
     display: flex;
     justify-content: start;
@@ -38,51 +41,113 @@
     flex-wrap: wrap;
     gap: 4%;
 
-    .item{
+    .item {
       width: 22%;
       margin-bottom: 50px;
       position: relative;
 
-      .image{
+      .image {
         width: 100%;
         max-height: 400px;
         object-fit: cover;
       }
 
-      .caption{
-        .link{
+      .caption {
+        .link {
           font-size: 16px;
           font-weight: 600;
           text-decoration: none;
-          color:#000;
+          color: #000;
           transition: .3s;
 
-          &:hover{
+          &:hover {
             color: #036f8c;
           }
         }
       }
-      .rating{
+
+      .rating {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 40px;
         height: 25px;
-        background:#333;
+        background: #333;
         font-size: 18px;
-        color:#fff;
+        color: #fff;
         position: absolute;
         top: 10px;
         left: 10px;
         border-radius: 2px;
       }
-      .hashtag{
+
+      .hashtag {
         text-decoration: none;
         transition: .3s;
-        &:hover{
+
+        &:hover {
           text-decoration: underline;
         }
       }
+    }
+  }
+}
+
+.item {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  padding: 50px 0;
+  min-height: 90%;
+  width: 100%;
+  overflow-y: auto;
+
+  .image {
+    width: 30%;
+    max-height: 700px;
+    object-fit: cover;
+    margin-right: 50px;
+  }
+
+  .block {
+    width: 65%;
+
+    .title {
+      font-family: 'Roboto Medium', sans-serif;
+      font-size: 18px;
+      line-height: 1em;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .category{
+      text-transform: uppercase;
+      font-size: 15px;
+      color:cornflowerblue;
+      font-style:italic;
+      margin-bottom: 10px;
+    }
+
+    .rating {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .text{
+      margin-bottom: 10px;
+    }
+
+    .hashtags{
+      font-style: italic;
+      color:cornflowerblue;
+      margin-bottom: 10px;
+    }
+
+    .author{
+      font-style: italic;
+      color:orangered;
     }
   }
 }

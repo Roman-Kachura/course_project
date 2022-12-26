@@ -8,6 +8,12 @@
     justify-content: space-between;
     align-items: center;
 
+    .headerLink{
+      text-transform: uppercase;
+      text-decoration: none;
+      color:#fff;
+    }
+
     .firstDiv {
       display: flex;
       justify-content: start;
@@ -56,6 +62,7 @@
       .collapse {
           .dropdown {
             a {
+              text-transform: uppercase;
               padding: 0;
               margin-right: 20px;
               color: #fff;

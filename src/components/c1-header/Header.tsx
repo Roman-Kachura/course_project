@@ -9,6 +9,7 @@ import {NavLink} from 'react-router-dom';
 
 export const Header: React.FC = () => {
     const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
+    const isAuth = useSelector<RootState, boolean>(state => state.authReducer.isAuth);
     const dispatch = useAppDispatch();
     const logout = (e: MouseEvent<HTMLElement>) => {
         e.preventDefault();
@@ -28,10 +29,15 @@ export const Header: React.FC = () => {
                         </div>
                     }
                     <Navbar.Collapse className={style.collapse}>
-                        <NavDropdown title="Reviews" className={style.dropdown}>
-                            <NavDropdown.Item className={style.dropdownItem} href="/create-categories">Create
-                                collection</NavDropdown.Item>
-                        </NavDropdown>
+                        {
+                            isAuth
+                                ? <NavDropdown title="Reviews" className={style.dropdown}>
+                                    <NavDropdown.Item className={style.dropdownItem} href="/create-categories">Create
+                                        review</NavDropdown.Item>
+                                </NavDropdown>
+                                : <NavLink to={'/reviews'} className={style.headerLink}>Reviews</NavLink>
+                        }
+
                     </Navbar.Collapse>
                 </div>
                 <Navbar className={style.navbar}>

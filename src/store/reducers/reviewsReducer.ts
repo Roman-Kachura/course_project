@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {reviewApi, ReviewResponseType, SearchType} from '../../api/reviewApi';
+import {reviewApi, ReviewResponseType, ReviewType, SearchType} from '../../api/reviewApi';
 
 const reviewsInitialState: ReviewsInitialStateType = {
     reviews: [],
@@ -11,7 +11,8 @@ const reviewsInitialState: ReviewsInitialStateType = {
         sort: 'DATE DOWN',
         category: '',
         value: ''
-    }
+    },
+    item: {} as ReviewType
 }
 
 export const getReviewsThunk = createAsyncThunk('get-reviews', async (arg: { currentPage: number, search: SearchType }, thunkAPI) => {
@@ -19,6 +20,15 @@ export const getReviewsThunk = createAsyncThunk('get-reviews', async (arg: { cur
         const {currentPage, search} = arg;
         const reviews = await reviewApi.getReviews(currentPage, search);
         thunkAPI.dispatch(setReviewsState(reviews.data));
+    } catch (e) {
+        throw e;
+    }
+});
+export const getReviewsItemThunk = createAsyncThunk('get-reviews-item', async (arg: { id: string }, thunkAPI) => {
+    try {
+        const item = await reviewApi.getReviewsItem(arg.id);
+        console.log(item)
+        thunkAPI.dispatch(setItem(item.data));
     } catch (e) {
         throw e;
     }
@@ -36,6 +46,7 @@ const reviewsSlice = createSlice({
             state.categories = categories;
             state.sort = sort;
             state.search = search;
+            state.item = {} as ReviewType;
             if (search.hashtags) {
                 state.search = {
                     sort: search.sort,
@@ -43,11 +54,16 @@ const reviewsSlice = createSlice({
                     value: `#${search.hashtags}`
                 }
             }
+        },
+        setItem(state, action) {
+            state.item = action.payload;
         }
     }
 });
 
-const {setReviewsState} = reviewsSlice.actions;
+const {setReviewsState, setItem} = reviewsSlice.actions;
 
 export default reviewsSlice.reducer;
-export type ReviewsInitialStateType = ReviewResponseType;
+export type ReviewsInitialStateType = ReviewResponseType & {
+    item: ReviewType
+};
