@@ -11,6 +11,12 @@ export const reviewApi = {
     },
     getReviewsItem(id: string) {
         return $api.get<AxiosResponse, AxiosResponse<ReviewType>>(`/reviews/${id}`);
+    },
+    getReviewsItemRating(userID: string, reviewID: string) {
+        return $api.get<AxiosResponse, AxiosResponse<ReviewType>>(`/rating?id=${reviewID}&user=${userID}`);
+    },
+    changeReviewsItemRating(reviewID: string, userID: string, value: number) {
+        return $api.post<AxiosResponse, AxiosResponse<ChangeRatingResolveType>>(`/rating?id=${reviewID}&user=${userID}&value=${value}`);
     }
 }
 
@@ -41,4 +47,9 @@ export type SearchType = {
     category: string
     sort: string
     hashtags?: string
+}
+
+export type ChangeRatingResolveType = {
+    isRate:boolean
+    rating:number
 }

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {RootState, useAppDispatch} from '../../../store/store';
-import {getUsersThunk, UserInitialStateType} from '../../../store/reducers/usersReducer';
+import {clearUsersThunk, getUsersThunk, UserInitialStateType} from '../../../store/reducers/usersReducer';
 import {useSelector} from 'react-redux';
 import {UserResponseType} from '../../../api/authApi';
 import {Table} from 'react-bootstrap';
@@ -11,11 +11,17 @@ import {AppPagination} from '../../с9-additions/AppPagination';
 
 export const Users = React.memo(() => {
     const dispatch = useAppDispatch();
+    const clearUsers = () => dispatch(clearUsersThunk());
     const {users, currentPage, pagesCount} = useSelector<RootState, UserInitialStateType>(state => state.usersReducer);
     const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
     const getUsers = (currentPage: number = 1) => {
         dispatch(getUsersThunk({currentPage}));
     }
+    useEffect(() => {
+        return () => {
+            clearUsers();
+        }
+    }, []);
     if (!user || user.role !== 'ADMIN') return <Navigate to="/"/>
     return <UsersComponent
         user={user}

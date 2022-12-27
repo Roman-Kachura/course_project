@@ -9,12 +9,14 @@ export const commentsApi = {
 
 export type CommentType = {
     id: string,
-    author: {
-        id: string,
-        name: string,
-        photo: string
-    },
+    authorID: string
     reviewID: string,
     text: string,
     created: Date
+}
+
+export type AuthorType = {
+    id: string,
+    name: string,
+    photo: string
 }

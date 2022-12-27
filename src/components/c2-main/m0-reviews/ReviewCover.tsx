@@ -3,7 +3,7 @@ import {Figure} from 'react-bootstrap';
 import style from './Reviews.module.scss';
 import {NavLink} from 'react-router-dom';
 
-export const ReviewCover: React.FC<ReviewCoverPropsType> = ({src, id, title, rating, hashtags, hashtagSearch}) => {
+export const ReviewCover: React.FC<ReviewCoverPropsType> = ({src, id, title, rating, hashtags, hashtagSearch, category}) => {
     const onClickHandler = (e: MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         hashtagSearch(e.currentTarget.title);
@@ -17,6 +17,7 @@ export const ReviewCover: React.FC<ReviewCoverPropsType> = ({src, id, title, rat
                     src={src}
                 />
             </NavLink>
+            <div className={style.categoryText}>category: {category}</div>
             <Figure.Caption className={style.caption}>
                 <NavLink to={`/reviews/${id}`} className={style.link}>
                     {title}
@@ -45,4 +46,5 @@ type ReviewCoverPropsType = {
     title: string
     hashtags: string[]
     hashtagSearch: (hashtag: string) => void
+    category: string
 }

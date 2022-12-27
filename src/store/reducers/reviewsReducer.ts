@@ -24,6 +24,14 @@ export const getReviewsThunk = createAsyncThunk('get-reviews', async (arg: { cur
     }
 });
 
+export const clearReviewsThunk = createAsyncThunk('clear-reviews', async (arg, thunkAPI) => {
+    try {
+        thunkAPI.dispatch(setReviewsState(reviewsInitialState));
+    } catch (e) {
+        throw e;
+    }
+});
+
 const reviewsSlice = createSlice({
     name: 'reviews',
     initialState: reviewsInitialState,

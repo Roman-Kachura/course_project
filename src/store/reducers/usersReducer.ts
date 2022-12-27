@@ -4,15 +4,22 @@ import {usersApi} from '../../api/usersApi';
 
 const usersInitialState: UserInitialStateType = {
     users: [] as UserResponseType[],
-    currentPage:1,
-    pagesCount:1
+    currentPage: 1,
+    pagesCount: 1
 }
 
-export const getUsersThunk = createAsyncThunk('get-users', async (arg:{currentPage:number}, thunkAPI) => {
-    try{
+export const getUsersThunk = createAsyncThunk('get-users', async (arg: { currentPage: number }, thunkAPI) => {
+    try {
         const users = await usersApi.getUsers(arg.currentPage);
         thunkAPI.dispatch(setUsersState(users.data));
-    }catch (e) {
+    } catch (e) {
+        throw e;
+    }
+});
+export const clearUsersThunk = createAsyncThunk('clear-users', async (arg, thunkAPI) => {
+    try {
+        thunkAPI.dispatch(setUsersState(usersInitialState));
+    } catch (e) {
         throw e;
     }
 });
@@ -34,6 +41,6 @@ const {setUsersState} = usersSlice.actions;
 export default usersSlice.reducer;
 export type UserInitialStateType = {
     users: UserResponseType[]
-    currentPage:number
-    pagesCount:number
+    currentPage: number
+    pagesCount: number
 }
