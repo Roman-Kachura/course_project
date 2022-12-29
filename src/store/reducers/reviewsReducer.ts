@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {reviewApi, ReviewResponseType, SearchType} from '../../api/reviewApi';
+import {CreateReviewValuesType} from '../../components/c2-main/m0-reviews/CreateReviewForm';
 
 const reviewsInitialState: ReviewsInitialStateType = {
     reviews: [],
@@ -27,6 +28,14 @@ export const getReviewsThunk = createAsyncThunk('get-reviews', async (arg: { cur
 export const clearReviewsThunk = createAsyncThunk('clear-reviews', async (arg, thunkAPI) => {
     try {
         thunkAPI.dispatch(setReviewsState(reviewsInitialState));
+    } catch (e) {
+        throw e;
+    }
+});
+
+export const uploadFileThunk = createAsyncThunk('upload-file', async (arg: { form: FormData, values: CreateReviewValuesType }, thunkAPI) => {
+    try {
+        const file = await reviewApi.uploadFile(arg.form);
     } catch (e) {
         throw e;
     }

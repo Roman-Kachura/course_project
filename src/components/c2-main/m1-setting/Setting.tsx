@@ -1,3 +1,6 @@
+import {Rating} from '@mui/material';
+import React from 'react';
+
 export const Setting = () => {
     return(
         <div>

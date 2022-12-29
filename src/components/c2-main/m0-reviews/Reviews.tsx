@@ -7,12 +7,16 @@ import {AppPagination} from '../../с9-additions/AppPagination';
 import {SearchPanel} from './SearchPanel';
 import {ReviewCover} from './ReviewCover';
 import {SearchType} from '../../../api/reviewApi';
+import {UserResponseType} from '../../../api/authApi';
+import {useLocation} from 'react-router-dom';
 
 export const Reviews = React.memo(() => {
+    const local = useLocation();
+    const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
     const dispatch = useAppDispatch();
     const clearReviews = () => dispatch(clearReviewsThunk());
-    ;
     const getReviews = (currentPage: number, search: SearchType) => dispatch(getReviewsThunk({currentPage, search}));
+    const getMyReviews = () => dispatch(getReviewsThunk({currentPage:1, search:{...search,authorID:user.id}}));
     const changePage = (currentPage: number) => dispatch(getReviewsThunk({currentPage, search}));
     const changeSearchValue = (search: SearchType) => dispatch(getReviewsThunk({currentPage: 1, search}));
     const hashtagSearch = (hashtag: string) => dispatch(getReviewsThunk({

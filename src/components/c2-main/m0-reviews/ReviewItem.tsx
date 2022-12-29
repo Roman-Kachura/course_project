@@ -64,7 +64,6 @@ export const ReviewItem = React.memo(() => {
                         {title && <h5 className={style.title}>{title}</h5>}
                         {category && <div className={style.category}>Category: {category}</div>}
                         {
-                            rating &&
                             <div className={style.rating}>
                                 {!isAuth && <Rating
                                     value={rating}
@@ -79,7 +78,7 @@ export const ReviewItem = React.memo(() => {
                                     precision={.1}
                                     max={10}
                                     size="small"
-                                    readOnly={!!isRate}
+                                    readOnly={isRate}
                                     onChange={changeRating}
                                 />}
                             </div>

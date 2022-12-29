@@ -32,8 +32,15 @@ export const Header: React.FC = () => {
                         {
                             isAuth
                                 ? <NavDropdown title="Reviews" className={style.dropdown}>
-                                    <NavDropdown.Item className={style.dropdownItem} href="/create-categories">Create
-                                        review</NavDropdown.Item>
+                                    <NavDropdown.Item className={style.dropdownItem} href="/create-review">
+                                        Create review
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item className={style.dropdownItem} href="/my-reviews">
+                                        My reviews
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item className={style.dropdownItem} href="/reviews">
+                                        All Reviews
+                                    </NavDropdown.Item>
                                 </NavDropdown>
                                 : <NavLink to={'/reviews'} className={style.headerLink}>Reviews</NavLink>
                         }

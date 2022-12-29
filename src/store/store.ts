@@ -6,7 +6,17 @@ import usersReducer from './reducers/usersReducer';
 import reviewReducer from './reducers/reviewsReducer';
 import showReviewReducer from './reducers/showReviewReducer';
 
+export const setLimitForStorage = () => {
+    const limit = 24 * 60 * 1000;
+    const localStorageInitTime = Number(localStorage.getItem('localStorageInitTime'));
+    if (localStorageInitTime === null) {
+        localStorage.setItem('localStorageInitTime', (+new Date()).toString());
+    } else if (+new Date() - localStorageInitTime > limit)
+        localStorage.clear();
+    localStorage.setItem('localStorageInitTime', (+new Date()).toString());
+}
 const loadedState = () => {
+    setLimitForStorage()
     const state = localStorage.getItem('app');
     if (state) {
         return JSON.parse(state.toString())
@@ -14,6 +24,8 @@ const loadedState = () => {
         return null;
     }
 }
+
+
 export const store = configureStore({
     reducer: {
         authReducer,
@@ -22,7 +34,7 @@ export const store = configureStore({
         showReviewReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunkMiddleware),
-    preloadedState: loadedState()
+    preloadedState: loadedState() || {}
 });
 
 store.subscribe(() => {

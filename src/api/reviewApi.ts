@@ -17,6 +17,10 @@ export const reviewApi = {
     },
     changeReviewsItemRating(reviewID: string, userID: string, value: number) {
         return $api.post<AxiosResponse, AxiosResponse<ChangeRatingResolveType>>(`/rating?id=${reviewID}&user=${userID}&value=${value}`);
+    },
+    uploadFile(form: FormData) {
+        console.log(form)
+        return $api.post('/reviews/uploadfile', form);
     }
 }
 
@@ -47,9 +51,10 @@ export type SearchType = {
     category: string
     sort: string
     hashtags?: string
+    authorID?:string
 }
 
 export type ChangeRatingResolveType = {
-    isRate:boolean
-    rating:number
+    isRate: boolean
+    rating: number
 }
