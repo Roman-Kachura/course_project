@@ -50,6 +50,7 @@
 
     .info {
       width: 600px;
+      margin-bottom: 20px;
 
       .name {
         font-size: 18px;
@@ -63,12 +64,13 @@
       }
 
       .data {
-        display: flex;
-        justify-content: end;
         font-size: 14px;
         font-style: italic;
         color: cornflowerblue;
       }
+    }
+    .btn{
+
     }
   }
 }

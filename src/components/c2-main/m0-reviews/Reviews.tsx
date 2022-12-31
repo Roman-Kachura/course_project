@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {RootState, useAppDispatch} from '../../../store/store';
-import {clearReviewsThunk, getReviewsThunk, ReviewsInitialStateType} from '../../../store/reducers/reviewsReducer';
+import {getReviewsThunk, ReviewsInitialStateType} from '../../../store/reducers/reviewsReducer';
 import {useSelector} from 'react-redux';
 import style from './Reviews.module.scss';
 import {AppPagination} from '../../с9-additions/AppPagination';
@@ -8,35 +8,48 @@ import {SearchPanel} from './SearchPanel';
 import {ReviewCover} from './ReviewCover';
 import {SearchType} from '../../../api/reviewApi';
 import {UserResponseType} from '../../../api/authApi';
-import {useLocation} from 'react-router-dom';
+import {setIsResetThunk} from '../../../store/reducers/showReviewReducer';
+import {setAppStatus} from '../../../store/reducers/appReducer';
 
-export const Reviews = React.memo(() => {
-    const local = useLocation();
+export const Reviews = React.memo(({isAuthor}: ReviewsType) => {
     const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
+    const categories = useSelector<RootState, string[]>(state => state.categoriesReducer.categories);
     const dispatch = useAppDispatch();
-    const clearReviews = () => dispatch(clearReviewsThunk());
-    const getReviews = (currentPage: number, search: SearchType) => dispatch(getReviewsThunk({currentPage, search}));
-    const getMyReviews = () => dispatch(getReviewsThunk({currentPage:1, search:{...search,authorID:user.id}}));
-    const changePage = (currentPage: number) => dispatch(getReviewsThunk({currentPage, search}));
-    const changeSearchValue = (search: SearchType) => dispatch(getReviewsThunk({currentPage: 1, search}));
+    const getReviewsForEffect = () => {
+        if (isAuthor) {
+            getMyReviews();
+        } else {
+            getReviews(1, search);
+        }
+    }
+    const getReviews = (currentPage: number, search: SearchType) => dispatch(getReviewsThunk({
+        currentPage,
+        search: {...search, authorID: isAuthor ? user.id : ''}
+    }));
+    const getMyReviews = () => dispatch(getReviewsThunk({currentPage: 1, search: {...search, authorID: user.id}}));
+    const changePage = (currentPage: number) => dispatch(getReviewsThunk({
+        currentPage,
+        search: {...search, authorID: isAuthor ? user.id : ''}
+    }));
+    const changeSearchValue = (search: SearchType) => dispatch(getReviewsThunk({
+        currentPage: 1,
+        search: {...search, authorID: isAuthor ? user.id : ''}
+    }));
     const hashtagSearch = (hashtag: string) => dispatch(getReviewsThunk({
         currentPage: 1,
         search: {...search, value: hashtag}
     }));
     const {
         reviews,
-        categories,
         sort,
         pagesCount,
         currentPage,
         search
-    }
-        = useSelector<RootState, ReviewsInitialStateType>(state => state.reviewReducer);
+    } = useSelector<RootState, ReviewsInitialStateType>(state => state.reviewsReducer);
     useEffect(() => {
-        getReviews(1, search);
-        return () => {
-            clearReviews()
-        };
+        dispatch(setIsResetThunk());
+        dispatch(setAppStatus('stop'));
+        getReviewsForEffect();
     }, [dispatch]);
 
     return (
@@ -57,6 +70,10 @@ export const Reviews = React.memo(() => {
         </div>
     )
 });
+
+type ReviewsType = {
+    isAuthor?: boolean
+}
 
 
 

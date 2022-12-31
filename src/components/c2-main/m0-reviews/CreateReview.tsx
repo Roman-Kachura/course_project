@@ -1,21 +1,27 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import style from './Reviews.module.scss';
 import {RootState, useAppDispatch} from '../../../store/store';
-import {uploadFileThunk} from '../../../store/reducers/reviewsReducer';
+import {getReviewsThunk, createReviewThunk} from '../../../store/reducers/reviewsReducer';
 import {Figure, Form} from 'react-bootstrap';
 import defaultImage from './default-image.png';
 import {CreateReviewForm, CreateReviewValuesType} from './CreateReviewForm';
 import {useSelector} from 'react-redux';
 import {UserResponseType} from '../../../api/authApi';
 import {Navigate} from 'react-router-dom';
+import {setIsResetThunk} from '../../../store/reducers/showReviewReducer';
 
 export const CreateReview = React.memo(() => {
     const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
     const isAuth = useSelector<RootState, boolean>(state => state.authReducer.isAuth);
     const [file, setFile] = useState<File>();
-    const [fileError, setFileError] = useState('');
     const [image, setImage] = useState<string | ArrayBuffer | null>(defaultImage);
+    const [fileError, setFileError] = useState('');
+    const isReset = useSelector<RootState, boolean>(state => state.showReviewReducer.isReset);
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(setIsResetThunk());
+    }, [])
     const changeFile = async (e: ChangeEvent<HTMLInputElement>) => {
         const reader = new FileReader();
         const file = e.currentTarget.files && e.currentTarget.files[0];
@@ -47,12 +53,15 @@ export const CreateReview = React.memo(() => {
             form.append('description', description);
             form.append('category', category);
             form.append('authorID', user.id);
-            dispatch(uploadFileThunk({form, values}));
+            dispatch(createReviewThunk({form, values}));
+            setImage(defaultImage);
             return {isReset: true};
+
         }
     }
 
     if (!isAuth) return <Navigate to={'/'}/>
+    if (isReset) return <Navigate to={'/reviews'}/>
     return (
         <div className={style.createReview}>
             <div className={style.drop}>

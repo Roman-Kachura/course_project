@@ -7,6 +7,7 @@ import {Table} from 'react-bootstrap';
 import style from './Users.module.scss';
 import {Navigate, NavLink} from 'react-router-dom';
 import {AppPagination} from '../../с9-additions/AppPagination';
+import {setAppStatus} from '../../../store/reducers/appReducer';
 
 
 export const Users = React.memo(() => {
@@ -18,10 +19,11 @@ export const Users = React.memo(() => {
         dispatch(getUsersThunk({currentPage}));
     }
     useEffect(() => {
+        dispatch(setAppStatus('stop'));
         return () => {
             clearUsers();
         }
-    }, []);
+    }, [dispatch]);
     if (!user || user.role !== 'ADMIN') return <Navigate to="/"/>
     return <UsersComponent
         user={user}
@@ -33,7 +35,7 @@ export const Users = React.memo(() => {
 });
 const UsersComponent: React.FC<UsersComponentType> = ({data, getUsers, pagesCount, currentPage, user}) => {
     useEffect(() => {
-        getUsers();
+        getUsers(currentPage);
     }, []);
 
     return (
@@ -66,7 +68,7 @@ const UsersComponent: React.FC<UsersComponentType> = ({data, getUsers, pagesCoun
 }
 
 type UsersComponentType = {
-    getUsers: () => void
+    getUsers: (currentPage:number) => void
     data: UserResponseType[]
     user: UserResponseType
     pagesCount: number

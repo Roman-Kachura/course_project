@@ -1,12 +1,14 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {reviewApi, ReviewResponseType, SearchType} from '../../api/reviewApi';
 import {CreateReviewValuesType} from '../../components/c2-main/m0-reviews/CreateReviewForm';
+import {setIsReset} from './showReviewReducer';
+import {setAppStatus} from './appReducer';
+import {getCategoriesThunk} from './categoriesReducer';
 
 const reviewsInitialState: ReviewsInitialStateType = {
     reviews: [],
     currentPage: 1,
     pagesCount: 1,
-    categories: [],
     sort: [],
     search: {
         sort: 'DATE DOWN',
@@ -20,23 +22,20 @@ export const getReviewsThunk = createAsyncThunk('get-reviews', async (arg: { cur
         const {currentPage, search} = arg;
         const reviews = await reviewApi.getReviews(currentPage, search);
         thunkAPI.dispatch(setReviewsState(reviews.data));
+        thunkAPI.dispatch(getCategoriesThunk());
     } catch (e) {
         throw e;
     }
 });
 
-export const clearReviewsThunk = createAsyncThunk('clear-reviews', async (arg, thunkAPI) => {
+export const createReviewThunk = createAsyncThunk('create-review', async (arg: { form: FormData, values: CreateReviewValuesType }, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatus('loading'));
     try {
-        thunkAPI.dispatch(setReviewsState(reviewsInitialState));
+        await reviewApi.createReview(arg.form);
+        thunkAPI.dispatch(setIsReset(true));
+        thunkAPI.dispatch(setAppStatus('stop'));
     } catch (e) {
-        throw e;
-    }
-});
-
-export const uploadFileThunk = createAsyncThunk('upload-file', async (arg: { form: FormData, values: CreateReviewValuesType }, thunkAPI) => {
-    try {
-        const file = await reviewApi.uploadFile(arg.form);
-    } catch (e) {
+        thunkAPI.dispatch(setAppStatus('stop'));
         throw e;
     }
 });
@@ -50,7 +49,6 @@ const reviewsSlice = createSlice({
             state.reviews = reviews;
             state.currentPage = currentPage;
             state.pagesCount = pagesCount;
-            state.categories = categories;
             state.sort = sort;
             state.search = search;
             if (search.hashtags) {

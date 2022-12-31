@@ -4,9 +4,10 @@ import style from './Reviews.module.scss';
 import {SearchType} from '../../../api/reviewApi';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../store/store';
+import reviewsReducer from '../../../store/reducers/reviewsReducer';
 
 export const SearchPanel: React.FC<SearchPanelPropsType> = ({categories, sort, callBack}) => {
-    const search = useSelector<RootState, SearchType>(state => state.reviewReducer.search);
+    const search = useSelector<RootState, SearchType>(state => state.reviewsReducer.search);
     const [category, setCategory] = useState(search.category);
     const [sortValue, setSortValue] = useState(search.sort);
     const [searchValue, setSearchValue] = useState(search.value);

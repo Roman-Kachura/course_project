@@ -15,6 +15,7 @@ export const Header: React.FC = () => {
         e.preventDefault();
         dispatch(logoutThunk({id: user.id}));
     }
+
     return (
         <Navbar bg="dark" variant="dark" className={style.header}>
             <Container className={style.container}>
@@ -53,8 +54,8 @@ export const Header: React.FC = () => {
                             <Nav className={style.nav}>
                                 <NavDropdown title="Options" className={style.dropdown}>
                                     {user.role === 'ADMIN' &&
-                                        <NavDropdown.Item className={style.dropdownItem} href="/create-category">Create
-                                            category</NavDropdown.Item>
+                                        <NavDropdown.Item className={style.dropdownItem}
+                                                          href="/categories">Category</NavDropdown.Item>
                                     }
                                     {user.role === 'ADMIN' &&
                                         <NavDropdown.Item className={style.dropdownItem}

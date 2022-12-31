@@ -1,14 +1,12 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../store/store';
-import {ReviewsInitialStateType} from '../../../store/reducers/reviewsReducer';
 import {Formik} from 'formik';
 import {Button, Form} from 'react-bootstrap';
 import style from './Reviews.module.scss';
-import {Navigate} from 'react-router-dom';
 
 export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack}) => {
-    const {categories} = useSelector<RootState, ReviewsInitialStateType>(state => state.reviewReducer);
+    const categories = useSelector<RootState, string[]>(state => state.categoriesReducer.categories);
     return (
         <Formik
             initialValues={{title: '', category: categories[0], description: '', hashtags: ''}}

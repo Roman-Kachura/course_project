@@ -4,6 +4,12 @@ import {AxiosResponse} from 'axios';
 export const commentsApi = {
     getComments(id: string) {
         return $api.get<AxiosResponse, AxiosResponse<CommentType[]>>(`/comments/${id}`);
+    },
+    createComment(data: CreateCommentValuesType) {
+        return $api.post<AxiosResponse, AxiosResponse<CommentType>>(`/comments`, data);
+    },
+    deleteComment(data: DeleteCommentValuesType) {
+        return $api.delete<AxiosResponse, AxiosResponse<CommentType>>(`/comments/${data.id}/${data.authorID}`);
     }
 }
 
@@ -12,7 +18,8 @@ export type CommentType = {
     authorID: string
     reviewID: string,
     text: string,
-    created: Date
+    created?: Date
+    author: AuthorType
 }
 
 export type AuthorType = {
@@ -20,3 +27,6 @@ export type AuthorType = {
     name: string,
     photo: string
 }
+
+export type CreateCommentValuesType = { reviewID: string, authorID: string, text: string };
+export type DeleteCommentValuesType = { id: string, authorID: string };

@@ -1,0 +1,12 @@
+.container{
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .spinner{
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
+  }
+}

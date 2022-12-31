@@ -3,11 +3,14 @@ import thunkMiddleware from 'redux-thunk';
 import authReducer from './reducers/authReducer';
 import {useDispatch} from 'react-redux';
 import usersReducer from './reducers/usersReducer';
-import reviewReducer from './reducers/reviewsReducer';
+import reviewsReducer from './reducers/reviewsReducer';
 import showReviewReducer from './reducers/showReviewReducer';
+import appReducer from './reducers/appReducer';
+import categoriesReducer from './reducers/categoriesReducer';
+import commentsReducer from './reducers/commentsReducer';
 
 export const setLimitForStorage = () => {
-    const limit = 24 * 60 * 1000;
+    const limit = 24 * 3600 * 1000;
     const localStorageInitTime = Number(localStorage.getItem('localStorageInitTime'));
     if (localStorageInitTime === null) {
         localStorage.setItem('localStorageInitTime', (+new Date()).toString());
@@ -30,8 +33,11 @@ export const store = configureStore({
     reducer: {
         authReducer,
         usersReducer,
-        reviewReducer,
-        showReviewReducer
+        reviewsReducer,
+        showReviewReducer,
+        appReducer,
+        categoriesReducer,
+        commentsReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunkMiddleware),
     preloadedState: loadedState() || {}

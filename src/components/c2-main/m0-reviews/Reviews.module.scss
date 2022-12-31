@@ -112,13 +112,25 @@
     align-items: start;
     margin-bottom: 50px;
 
-    .image {
+    .firstBlock{
       width: 30%;
-      max-height: 700px;
-      min-height: 500px;
-      object-fit: cover;
+      display: flex;
+      justify-content: start;
+      align-items: flex-start;
+      flex-direction: column;
       margin-right: 50px;
+
+
+      .image {
+        width: 100%;
+        max-height: 700px;
+        min-height: 500px;
+        object-fit: cover;
+        margin-bottom: 20px;
+      }
     }
+
+
 
     .block {
       width: 65%;
@@ -146,6 +158,10 @@
         margin-bottom: 10px;
       }
 
+      .feedbacks{
+        margin-bottom: 10px;
+      }
+
       .text {
         margin-bottom: 10px;
       }
@@ -166,7 +182,7 @@
 
 .createReview {
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   align-items: start;
   padding: 50px 0;
   min-height: 90%;

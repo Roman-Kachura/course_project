@@ -3,24 +3,27 @@ import {AxiosResponse} from 'axios';
 
 export const reviewApi = {
     getReviews(currentPage: number, search: SearchType) {
-        const {value, sort, category} = search;
+        const {value, sort, category, authorID} = search;
         const searchValue = value.charAt(0) === '#' ? '' : value;
         const hashtag = value.charAt(0) === '#' ? value.slice(1) : '';
-        const url = `/reviews?currentPage=${currentPage}&sort=${sort}&category=${category}&search=${searchValue}&hashtags=${hashtag}`;
+        const url = `/reviews?currentPage=${currentPage}&sort=${sort}&category=${category}&search=${searchValue}&hashtags=${hashtag}&author=${authorID || ''}`;
         return $api.get<AxiosResponse, AxiosResponse<ReviewResponseType>>(url)
     },
     getReviewsItem(id: string) {
         return $api.get<AxiosResponse, AxiosResponse<ReviewType>>(`/reviews/${id}`);
     },
-    getReviewsItemRating(userID: string, reviewID: string) {
-        return $api.get<AxiosResponse, AxiosResponse<ReviewType>>(`/rating?id=${reviewID}&user=${userID}`);
+    getReviewsItemMyRating(userID: string, reviewID: string) {
+        return $api.get<AxiosResponse, AxiosResponse<number>>(`/rating?id=${reviewID}&user=${userID}`);
     },
     changeReviewsItemRating(reviewID: string, userID: string, value: number) {
-        return $api.post<AxiosResponse, AxiosResponse<ChangeRatingResolveType>>(`/rating?id=${reviewID}&user=${userID}&value=${value}`);
+        const url = `/rating?id=${reviewID}&user=${userID}&value=${value}`
+        return $api.post<AxiosResponse, AxiosResponse<ChangeRatingResolveType>>(url);
     },
-    uploadFile(form: FormData) {
-        console.log(form)
+    createReview(form: FormData) {
         return $api.post('/reviews/uploadfile', form);
+    },
+    deleteReview(id: string, authorID: string) {
+        return $api.delete(`/reviews/${id}/${authorID}`);
     }
 }
 
@@ -41,7 +44,6 @@ export type ReviewResponseType = {
     reviews: ReviewType[]
     currentPage: number
     pagesCount: number
-    categories: string[]
     sort: string[]
     search: SearchType
 }
@@ -51,7 +53,7 @@ export type SearchType = {
     category: string
     sort: string
     hashtags?: string
-    authorID?:string
+    authorID?: string
 }
 
 export type ChangeRatingResolveType = {

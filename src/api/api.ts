@@ -2,7 +2,7 @@ import axios, {AxiosRequestConfig} from 'axios';
 // https://course-server.herokuapp.com/
 // http://localhost:5000
 export const $api = axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: 'https://course-server.herokuapp.com/',
     withCredentials: true
 });
 

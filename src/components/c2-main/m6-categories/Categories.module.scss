@@ -1,0 +1,27 @@
+.categories{
+  height: 100%;
+  display: flex;
+  padding: 50px 0;
+
+  .table{
+    width: 300px;
+    margin-right: 50px;
+  }
+
+  .addBlock{
+    width: 300px;
+
+    .input{
+      margin-bottom: 20px;
+
+      &.error{
+        border: 1px solid red;
+      }
+    }
+
+    .errorText{
+      color:red;
+      margin-bottom: 20px;
+    }
+  }
+}
