@@ -1,0 +1,143 @@
+.createReview {
+  padding: 50px 0;
+
+  .drop {
+    margin-bottom: 50px;
+    display: flex;
+
+    .drag {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      text-transform: uppercase;
+      color: #000;
+      width: 300px;
+      height: 300px;
+      border-radius: 5px;
+      border: 1px solid #000;
+      cursor: pointer;
+      transition: .5s all;
+
+      &:hover {
+        color: #0d6efd;
+        border: 1px solid #0d6efd;
+      }
+
+      &.error {
+        color: red;
+        border: 1px solid red;
+      }
+    }
+
+    .image {
+      width: 300px;
+      height: 300px;
+      border-radius: 5px;
+      border: 1px solid #000;
+      object-fit: cover;
+      cursor: pointer;
+      transition: .5s all;
+      margin-right: 50px;
+
+      &:hover {
+        color: #0d6efd;
+        border: 1px solid #0d6efd;
+      }
+    }
+
+    .file {
+      opacity: 0;
+      height: 0;
+      width: 0;
+    }
+
+    .rating {
+      .label {
+        color: #ff9900;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .form {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .description {
+      width: 100%;
+      margin-bottom: 50px;
+
+      .label {
+        color: #0d6efd;
+      }
+
+      textarea{
+        border: 1px solid rgba(33,37,41);
+        background: rgba(33,37,41);
+        color:#fff;
+        &:focus{
+          border: 1px solid rgba(33,37,41);
+          background: rgba(33,37,41);
+          color:#fff;
+        }
+      }
+
+      .errorInput {
+        border: 2px solid red;
+      }
+
+      .errorText {
+        color: red;
+      }
+    }
+
+    .groupOne,
+    .groupTwo {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-direction: column;
+      width: 40%;
+      margin-bottom: 50px;
+
+      .group {
+        width: 100%;
+        min-height: 120px;
+
+        input, textarea, select {
+          margin-bottom: 10px;
+
+          border: 1px solid rgba(33, 37, 41);
+          background: rgba(33, 37, 41);
+          color: #fff;
+
+          &:focus {
+            border: 1px solid rgba(33, 37, 41);
+            background: rgba(33, 37, 41);
+            color: #fff;
+          }
+        }
+
+        .label {
+          color: #0d6efd;
+        }
+
+        .errorInput {
+          border: 2px solid red;
+        }
+
+        .errorText {
+          color: red;
+        }
+      }
+    }
+
+    .btn {
+      width: 100%;
+    }
+  }
+}

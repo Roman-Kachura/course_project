@@ -12,7 +12,7 @@
     flex-direction: column;
     padding: 20px;
     border-radius: 5px;
-    background: #fff;
+    background: #444;
     width: 400px;
 
     .photo {
@@ -63,11 +63,19 @@
       width: 100%;
       .input{
         margin-bottom: 20px;
-        &.error{
+        border: 1px solid rgba(33,37,41);
+        background: rgba(33,37,41);
+        color:#fff;
+        &:focus{
+          border: 1px solid rgba(33,37,41);
+          background: rgba(33,37,41);
+          color:#fff;
+        }
+        &.errorText{
           border: 1px solid red;
         }
       }
-      .error{
+      .errorText{
         display: flex;
         justify-content: start;
         align-items: center;

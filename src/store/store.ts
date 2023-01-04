@@ -8,6 +8,7 @@ import showReviewReducer from './reducers/showReviewReducer';
 import appReducer from './reducers/appReducer';
 import categoriesReducer from './reducers/categoriesReducer';
 import commentsReducer from './reducers/commentsReducer';
+import searchListReducer from './reducers/searchReducer';
 
 export const setLimitForStorage = () => {
     const limit = 24 * 3600 * 1000;
@@ -37,7 +38,8 @@ export const store = configureStore({
         showReviewReducer,
         appReducer,
         categoriesReducer,
-        commentsReducer
+        commentsReducer,
+        searchListReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunkMiddleware),
     preloadedState: loadedState() || {}

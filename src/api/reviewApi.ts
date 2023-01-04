@@ -20,18 +20,23 @@ export const reviewApi = {
         return $api.post<AxiosResponse, AxiosResponse<ChangeRatingResolveType>>(url);
     },
     createReview(form: FormData) {
-        return $api.post('/reviews/uploadfile', form);
+        return $api.post('/reviews/create', form);
     },
     deleteReview(id: string, authorID: string) {
         return $api.delete(`/reviews/${id}/${authorID}`);
+    },
+    editReview(form: FormData){
+        return $api.post('/reviews/edit', form);
     }
 }
 
 export type ReviewType = {
     id: string,
-    title: string,
+    name: string,
+    product: string,
     author: string
     authorID: string,
+    authorRating: number,
     text: string,
     rating: number,
     image: string

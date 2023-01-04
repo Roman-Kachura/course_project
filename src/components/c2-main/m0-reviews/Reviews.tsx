@@ -4,12 +4,13 @@ import {getReviewsThunk, ReviewsInitialStateType} from '../../../store/reducers/
 import {useSelector} from 'react-redux';
 import style from './Reviews.module.scss';
 import {AppPagination} from '../../с9-additions/AppPagination';
-import {SearchPanel} from './SearchPanel';
+import {SearchPanel} from '../m7-search/SearchPanel';
 import {ReviewCover} from './ReviewCover';
 import {SearchType} from '../../../api/reviewApi';
 import {UserResponseType} from '../../../api/authApi';
 import {setIsResetThunk} from '../../../store/reducers/showReviewReducer';
 import {setAppStatus} from '../../../store/reducers/appReducer';
+import {SearchParamsType} from '../../../store/reducers/searchReducer';
 
 export const Reviews = React.memo(({isAuthor}: ReviewsType) => {
     const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
@@ -39,13 +40,8 @@ export const Reviews = React.memo(({isAuthor}: ReviewsType) => {
         currentPage: 1,
         search: {...search, value: hashtag}
     }));
-    const {
-        reviews,
-        sort,
-        pagesCount,
-        currentPage,
-        search
-    } = useSelector<RootState, ReviewsInitialStateType>(state => state.reviewsReducer);
+    const {reviews, sort, pagesCount, currentPage} = useSelector<RootState, ReviewsInitialStateType>(state => state.reviewsReducer);
+    const search = useSelector<RootState, SearchParamsType>(state => state.searchListReducer.params);
     useEffect(() => {
         dispatch(setIsResetThunk());
         dispatch(setAppStatus('stop'));
@@ -56,9 +52,26 @@ export const Reviews = React.memo(({isAuthor}: ReviewsType) => {
         <div className={style.reviews}>
             <SearchPanel categories={categories} sort={sort} callBack={changeSearchValue}/>
             <div className={style.container}>
-                {reviews.map(r => <ReviewCover key={r.id} id={r.id} src={r.image} rating={r.rating} title={r.title}
-                                               hashtags={r.hashtags} hashtagSearch={hashtagSearch}
-                                               category={r.category}/>)}
+                {
+                    reviews.map(
+                        r =>
+                            <ReviewCover
+                                key={r.id}
+                                id={r.id}
+                                src={r.image}
+                                rating={r.rating}
+                                authorRating={r.authorRating}
+                                name={r.name}
+                                product={r.product}
+                                hashtags={r.hashtags}
+                                hashtagSearch={hashtagSearch}
+                                category={r.category}
+                                created={r.created}
+                                authorID={r.authorID}
+                                user={user}
+                            />
+                    )
+                }
             </div>
             <div className={style.pagination}>
                 <AppPagination

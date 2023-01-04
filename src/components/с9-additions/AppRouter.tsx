@@ -6,8 +6,9 @@ import {Reviews} from '../c2-main/m0-reviews/Reviews';
 import {SettingContainer} from '../c2-main/m1-setting/Setting';
 import {Users} from '../c2-main/m4-users/Users';
 import {Categories} from '../c2-main/m6-categories/Categories';
-import {ReviewItem} from '../c2-main/m0-reviews/ReviewItem';
-import {CreateReview} from '../c2-main/m0-reviews/CreateReview';
+import {ReviewItem} from '../c2-main/m0-reviews/item/ReviewItem';
+import {CreateReview} from '../c2-main/m0-reviews/create/CreateReview';
+import {EditReview} from '../c2-main/m0-reviews/create/EditReview';
 
 export const AppRouter: React.FC = () => {
     return (
@@ -17,6 +18,7 @@ export const AppRouter: React.FC = () => {
             <Route path="/reviews" element={<Reviews/>}/>
             <Route path="/my-reviews" element={<Reviews isAuthor/>}/>
             <Route path="/reviews/:id" element={<ReviewItem/>}/>
+            <Route path="/reviews/edit/:id" element={<EditReview/>}/>
             <Route path="/create-review" element={<CreateReview/>}/>
             <Route path="/setting" element={<SettingContainer/>}/>
             <Route path="/users" element={<Users/>}/>

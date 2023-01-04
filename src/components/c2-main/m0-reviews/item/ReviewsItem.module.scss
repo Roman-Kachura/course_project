@@ -1,0 +1,18 @@
+.review{
+  padding: 50px 0;
+  .item{
+    display: flex;
+    justify-content: start;
+    align-items: start;
+
+    .firstBlock{
+      .image{
+        width: 300px;
+        height: 300px;
+        object-fit: cover;
+        margin-right: 50px;
+        border:1px solid #000;
+      }
+    }
+  }
+}

@@ -20,7 +20,6 @@ export const createCommentThunk = createAsyncThunk('create-comment-thunk', async
 export const getCommentsThunk = createAsyncThunk('get-comments', async (arg: { id: string }, thunkAPI) => {
     try {
         const comments = await commentsApi.getComments(arg.id);
-        console.log(comments.data);
         thunkAPI.dispatch(setComments(comments.data));
     } catch (e) {
         throw e;

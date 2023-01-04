@@ -38,7 +38,6 @@ export const changeRatingThunk = createAsyncThunk('change-rating', async (arg: {
     try {
         await reviewApi.changeReviewsItemRating(arg.reviewID, arg.userID, arg.value);
         thunkAPI.dispatch(getReviewsItemThunk({id: arg.reviewID, userID: arg.userID}));
-        // thunkAPI.dispatch(setRating(true));
     } catch (e) {
         throw e;
     }

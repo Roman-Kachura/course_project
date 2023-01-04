@@ -13,8 +13,16 @@
 
     .input{
       margin-bottom: 20px;
+      border: 1px solid rgba(33,37,41);
+      background: rgba(33,37,41);
+      color:#fff;
+      &:focus{
+        border: 1px solid rgba(33,37,41);
+        background: rgba(33,37,41);
+        color:#fff;
+      }
 
-      &.error{
+      &.errorText{
         border: 1px solid red;
       }
     }
