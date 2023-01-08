@@ -4,12 +4,15 @@ import {commentsApi, CommentType, DeleteCommentValuesType} from '../../api/comme
 
 const commentsInitialState: CommentsInitialStateType = {
     comments: [],
+    page: 1,
+    count: 0,
+    pagesCount:1
 };
 
 export const createCommentThunk = createAsyncThunk('create-comment-thunk', async (arg: { reviewID: string, authorID: string, text: string }, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus('loading'));
     try {
-        const comment = await commentsApi.createComment(arg);
+        await commentsApi.createComment(arg);
     } catch (e) {
         throw e;
     } finally {
@@ -17,9 +20,9 @@ export const createCommentThunk = createAsyncThunk('create-comment-thunk', async
     }
 });
 
-export const getCommentsThunk = createAsyncThunk('get-comments', async (arg: { id: string }, thunkAPI) => {
+export const getCommentsThunk = createAsyncThunk('get-comments', async (arg: { id: string, page: number }, thunkAPI) => {
     try {
-        const comments = await commentsApi.getComments(arg.id);
+        const comments = await commentsApi.getComments(arg.id, arg.page);
         thunkAPI.dispatch(setComments(comments.data));
     } catch (e) {
         throw e;
@@ -29,7 +32,7 @@ export const getCommentsThunk = createAsyncThunk('get-comments', async (arg: { i
 export const deleteCommentThunk = createAsyncThunk('get-comments', async (arg: DeleteCommentValuesType, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus('loading'));
     try {
-        const comments = await commentsApi.deleteComment(arg);
+        await commentsApi.deleteComment(arg);
     } catch (e) {
         throw e;
     } finally {
@@ -43,7 +46,10 @@ const commentsSlice = createSlice({
     initialState: commentsInitialState,
     reducers: {
         setComments(state, action) {
-            state.comments = action.payload;
+            state.comments = action.payload.comments;
+            state.page = +action.payload.page;
+            state.pagesCount = +action.payload.pagesCount;
+            state.count = action.payload.count;
         }
     },
 });
@@ -54,4 +60,7 @@ export default commentsSlice.reducer;
 
 type CommentsInitialStateType = {
     comments: CommentType[]
+    count: number
+    page: number
+    pagesCount:number
 }

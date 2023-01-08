@@ -7,12 +7,11 @@ import {Table} from 'react-bootstrap';
 import style from './Users.module.scss';
 import {Navigate, NavLink} from 'react-router-dom';
 import {AppPagination} from '../../с9-additions/AppPagination';
-import {setAppStatus} from '../../../store/reducers/appReducer';
+import {LangType, setAppStatus} from '../../../store/reducers/appReducer';
 
 
 export const Users = React.memo(() => {
     const dispatch = useAppDispatch();
-    const clearUsers = () => dispatch(clearUsersThunk());
     const {users, currentPage, pagesCount} = useSelector<RootState, UserInitialStateType>(state => state.usersReducer);
     const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
     const getUsers = (currentPage: number = 1) => {
@@ -20,9 +19,6 @@ export const Users = React.memo(() => {
     }
     useEffect(() => {
         dispatch(setAppStatus('stop'));
-        return () => {
-            clearUsers();
-        }
     }, [dispatch]);
     if (!user || user.role !== 'ADMIN') return <Navigate to="/"/>
     return <UsersComponent
@@ -34,41 +30,46 @@ export const Users = React.memo(() => {
     />
 });
 const UsersComponent: React.FC<UsersComponentType> = ({data, getUsers, pagesCount, currentPage, user}) => {
+    const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
+    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     useEffect(() => {
         getUsers(currentPage);
     }, []);
 
     return (
         <div className={style.users}>
-            <Table striped bordered hover variant="dark">
+            <Table striped bordered hover variant={isDarkTheme ? 'dark' : 'light'}>
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Collections</th>
+                    <th>
+                        {language === 'RU' ? 'Имя' : 'Name'}
+                    </th>
+                    <th>
+                        {language === 'RU' ? 'Почта' : 'Email'}
+                    </th>
+                    <th>
+                        {language === 'RU' ? 'Роль' : 'Role'}
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
                 {data.map((u, i) =>
                     <tr key={u.id}>
-                        <td>{u.id}</td>
-                        <td>{u.name}</td>
+                        <td><NavLink to={`/users/${u.id}`}>{u.name}</NavLink></td>
                         <td>{u.email}</td>
                         <td>{u.role}</td>
-                        <td><NavLink to="/">show</NavLink></td>
                     </tr>
                 )}
                 </tbody>
             </Table>
-            <AppPagination pagesCount={pagesCount} currentPage={currentPage} callBack={getUsers}/>
+            {pagesCount > 1 && <AppPagination pagesCount={pagesCount} currentPage={currentPage} callBack={getUsers}/>}
         </div>
     )
 }
 
+
 type UsersComponentType = {
-    getUsers: (currentPage:number) => void
+    getUsers: (currentPage: number) => void
     data: UserResponseType[]
     user: UserResponseType
     pagesCount: number

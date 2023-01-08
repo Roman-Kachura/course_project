@@ -18,6 +18,7 @@
       border: 1px solid #000;
       cursor: pointer;
       transition: .5s all;
+      margin-bottom: 20px;
 
       &:hover {
         color: #0d6efd;
@@ -75,14 +76,15 @@
         color: #0d6efd;
       }
 
-      textarea{
-        border: 1px solid rgba(33,37,41);
-        background: rgba(33,37,41);
-        color:#fff;
-        &:focus{
-          border: 1px solid rgba(33,37,41);
-          background: rgba(33,37,41);
-          color:#fff;
+      textarea {
+        border: 1px solid rgba(33, 37, 41);
+        background: rgba(33, 37, 41);
+        color: #fff;
+
+        &:focus {
+          border: 1px solid rgba(33, 37, 41);
+          background: rgba(33, 37, 41);
+          color: #fff;
         }
       }
 
@@ -138,6 +140,84 @@
 
     .btn {
       width: 100%;
+    }
+
+    &.light {
+      .description {
+        textarea {
+          border: 1px solid #ddd;
+          background: rgba(248, 249, 250, 1);
+          color:#000;
+
+          &:focus {
+            border: 1px solid #ddd;
+            background: rgba(248, 249, 250, 1);
+            color: #000;
+          }
+        }
+      }
+      .groupOne,
+      .groupTwo{
+        .group{
+          input, textarea, select {
+            border: 1px solid #ddd;
+            background: rgba(248, 249, 250, 1);
+            color:#000;
+
+            &:focus {
+              border: 1px solid #ddd;
+              background: rgba(248, 249, 250, 1);
+              color: #000;
+            }
+            }
+          }
+        }
+      }
+    }
+  }
+
+@media screen and (max-width: 992px){
+  .createReview{
+    padding: 20px 0;
+    .drop{
+      margin-bottom: 20px;
+      .drag{
+        width: 200px;
+        height: 200px;
+        font-size: 18px;
+      }
+      .image{
+        width: 200px;
+        height: 200px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px){
+  .createReview{
+    padding: 20px 10px;
+    .drop{
+      flex-direction: column;
+      .drag{
+        width: 200px;
+        height: 200px;
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+    }
+    .form{
+      .description{
+        width: 300px;
+      }
+      .groupOne,
+      .groupTwo{
+        width: 300px;
+        margin-bottom: 20px;
+      }
+      .btn{
+        width: 300px;
+      }
     }
   }
 }

@@ -22,7 +22,6 @@ export const getSearchListThunk = createAsyncThunk('get-search-list', async (arg
 export const setSearchParamsThunk = createAsyncThunk('set-params', async (arg: { value: string }, thunkAPI) => {
     const arr = ['abc', 'cbc', 'item', '#dep', '#lept', 'hhh'];
     const arr2 = arr.filter(f => f.indexOf(arg.value) > -1)
-    console.log(arr2);
     thunkAPI.dispatch(setSearchList(arr2));
 });
 

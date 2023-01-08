@@ -1,0 +1,107 @@
+.userItem {
+  color: #fff;
+
+  .profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 50px;
+
+    .image {
+      border-radius: 50%;
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
+
+    .name {
+      color: #ff9900;
+    }
+  }
+
+  &.light {
+    .tableContainer {
+      .wrapper {
+        table {
+          border: 1px solid #ddd;
+        }
+
+        .title {
+          color: #0d6efd;
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+
+  .tableContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 50px;
+
+
+    .wrapper {
+      width: 70%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      .title {
+        color: #0d6efd;
+        margin-bottom: 20px;
+      }
+
+      .btnBlock {
+        .btn {
+          font-size: 12px;
+          margin-right: 5px;
+        }
+      }
+
+      .image {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px){
+  .userItem{
+    .profile{
+      margin-bottom: 20px;
+      .image{
+        width: 200px;
+        height: 200px;
+      }
+    }
+    .tableContainer{
+      .wrapper{
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px){
+  .userItem{
+    padding: 0 10px;
+    .profile{
+      margin-bottom: 20px;
+      .image{
+        width: 200px;
+        height: 200px;
+      }
+    }
+    .tableContainer{
+      .wrapper{
+        width: 100%;
+      }
+    }
+  }
+}

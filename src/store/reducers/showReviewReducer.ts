@@ -12,7 +12,7 @@ const showReviewInitialState: ReviewsInitialStateType = {
 export const getReviewsItemThunk = createAsyncThunk('get-reviews-item', async (arg: { id: string, userID?: string }, thunkAPI) => {
     try {
         const item = await reviewApi.getReviewsItem(arg.id);
-        thunkAPI.dispatch(getCommentsThunk({id:arg.id}));
+        thunkAPI.dispatch(getCommentsThunk({id: arg.id, page: 1}));
         if (arg.userID) {
             const rating = await reviewApi.getReviewsItemMyRating(arg.userID, arg.id);
             thunkAPI.dispatch(setMyRate(rating.data));
@@ -22,7 +22,6 @@ export const getReviewsItemThunk = createAsyncThunk('get-reviews-item', async (a
         throw e;
     }
 });
-
 
 
 export const getIsRate = createAsyncThunk('get-is-rate', async (arg: { reviewID: string, userID: string }, thunkAPI) => {
@@ -66,6 +65,7 @@ export const setIsResetThunk = createAsyncThunk('set-is-reset', async (arg, thun
     }
 });
 
+
 export const showReviewSlice = createSlice({
     name: 'show-review',
     initialState: showReviewInitialState,
@@ -78,11 +78,17 @@ export const showReviewSlice = createSlice({
         },
         setIsReset(state, action) {
             state.isReset = action.payload;
+        },
+        clearReviewsItemState(state) {
+            console.log('crear item')
+            state.isReset = false;
+            state.item = {} as ReviewType;
+            state.myRate = 0;
         }
     }
 });
 
-export const {setReviewItem, setMyRate, setIsReset} = showReviewSlice.actions;
+export const {setReviewItem, setMyRate, setIsReset, clearReviewsItemState} = showReviewSlice.actions;
 
 export default showReviewSlice.reducer;
 export type ReviewsInitialStateType = {

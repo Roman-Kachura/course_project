@@ -7,14 +7,17 @@ import {Navigate, NavLink} from 'react-router-dom';
 import {RootState, useAppDispatch} from '../../../store/store';
 import {registrationThunk} from '../../../store/reducers/authReducer';
 import {useSelector} from 'react-redux';
+import {LangType} from '../../../store/reducers/appReducer';
 
 export const Registration: React.FC = () => {
     const isAuth = useSelector<RootState,boolean>(state => state.authReducer.isAuth);
+    const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
+    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     if(isAuth) return <Navigate to={'/content'}/>
     return (
-        <div className={style.auth}>
+        <div className={isDarkTheme ? style.auth : `${style.auth} ${style.light}`}>
             <div className={style.item}>
-                <h3>Sign Up</h3>
+                <h3>{language === 'RU' ? 'Зарегистрироваться' : 'Sing Up'}</h3>
                 <RegistrationForm/>
             </div>
         </div>
@@ -23,6 +26,7 @@ export const Registration: React.FC = () => {
 
 const RegistrationForm: React.FC = () => {
     const dispatch = useAppDispatch();
+    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     return (
         <Formik
             initialValues={{email: '', password: '', name: ''}}
@@ -66,7 +70,7 @@ const RegistrationForm: React.FC = () => {
                             className={`${style.input} ${!!errors.name && touched.name && style.error}`}
                             type="text"
                             name="name"
-                            placeholder="Name*"
+                            placeholder={language === 'RU' ? 'Имя*' : 'Name*'}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.name}
@@ -81,7 +85,7 @@ const RegistrationForm: React.FC = () => {
                             className={`${style.input} ${!!errors.email && touched.email && style.error}`}
                             type="email"
                             name="email"
-                            placeholder="Email*"
+                            placeholder={language === 'RU' ? 'Пароль*' : 'Password*'}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.email}
@@ -96,7 +100,7 @@ const RegistrationForm: React.FC = () => {
                             className={`${style.input} ${!!errors.password && touched.password && style.error}`}
                             type="password"
                             name="password"
-                            placeholder="Password*"
+                            placeholder={language === 'RU' ? 'Пароль*' : 'Password*'}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.password}
@@ -110,11 +114,13 @@ const RegistrationForm: React.FC = () => {
                         type="submit"
                         className={style.button}
                         variant="primary">
-                        Sing Up
+                        {language === 'RU' ? 'Зарегистрироваться' : 'Sing Up'}
                     </Button>
 
 
-                    <NavLink to="/login">Do you have an account?</NavLink>
+                    <NavLink to="/login">
+                        {language === 'RU' ? 'Уже есть аккаунт?' : 'Do you have an account?'}
+                    </NavLink>
                 </form>
             )}
         </Formik>

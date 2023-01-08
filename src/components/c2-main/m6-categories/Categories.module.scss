@@ -1,7 +1,6 @@
 .categories{
   height: 100%;
   display: flex;
-  padding: 50px 0;
 
   .table{
     width: 300px;
@@ -29,6 +28,32 @@
 
     .errorText{
       color:red;
+      margin-bottom: 20px;
+    }
+  }
+
+  &.light{
+    .addBlock{
+      .input{
+        border: 1px solid #ddd;
+        background: rgba(248, 249, 250, 1);
+        color:#000;
+
+        &:focus {
+          border: 1px solid #ddd;
+          background: rgba(248, 249, 250, 1);
+          color: #000;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px){
+  .categories{
+    flex-direction: column-reverse;
+    padding: 0 10px;
+    .addBlock{
       margin-bottom: 20px;
     }
   }

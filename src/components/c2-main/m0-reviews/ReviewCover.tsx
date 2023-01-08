@@ -7,6 +7,7 @@ import {rewriteDate} from '../../../features/rewriteDate';
 import {UserResponseType} from '../../../api/authApi';
 import {deleteItemThunk} from '../../../store/reducers/showReviewReducer';
 import {useAppDispatch} from '../../../store/store';
+import {LangType} from '../../../store/reducers/appReducer';
 
 export const ReviewCover: React.FC<ReviewCoverPropsType> = (
     {
@@ -21,7 +22,8 @@ export const ReviewCover: React.FC<ReviewCoverPropsType> = (
         category,
         created,
         authorID,
-        user
+        user,
+        language
     }
 ) => {
 
@@ -33,7 +35,7 @@ export const ReviewCover: React.FC<ReviewCoverPropsType> = (
     }
 
     const deleteItem = () => {
-        dispatch(deleteItemThunk({id, authorID: user.id}));
+        dispatch(deleteItemThunk({id, authorID}));
     }
     const getToEditMode = () => {
         link.current && link.current.click();
@@ -47,6 +49,28 @@ export const ReviewCover: React.FC<ReviewCoverPropsType> = (
                     src={src}
                 />
             </NavLink>
+            {
+                user && user.id === authorID &&
+                <div className={style.btnBlock}>
+                    <Button className={style.btn} variant="outline-success" onClick={getToEditMode}>
+                        {language === 'RU' ? 'Изменить' : 'Edit'}
+                    </Button>
+                    <Button className={style.btn} variant="outline-danger" onClick={deleteItem}>
+                        {language === 'RU' ? 'Удалить' : 'Delete'}
+                    </Button>
+                </div>
+            }
+            {
+                user && user.id !== authorID && user.role === 'ADMIN' &&
+                <div className={style.btnBlock}>
+                    <Button className={style.btn} variant="outline-success" onClick={getToEditMode}>
+                        {language === 'RU' ? 'Изменить' : 'Edit'}
+                    </Button>
+                    <Button className={style.btn} variant="outline-danger" onClick={deleteItem}>
+                        {language === 'RU' ? 'Удалить' : 'Delete'}
+                    </Button>
+                </div>
+            }
             <div className={style.info}>
                 <div className={style.general}>
                     <h3 className={style.name}>
@@ -55,13 +79,30 @@ export const ReviewCover: React.FC<ReviewCoverPropsType> = (
 
                     <div className={style.rating}>
                         <Rating max={1} readOnly={true} value={1}/>
-                        <span className={style.text}>RATING: {rating} / AUTHOR RATING: {authorRating}</span>
+                        <span className={style.text}>
+                            {
+                                language === 'RU'
+                                    ? `ОЦЕНКА: ${rating} / ОЦЕНКА АВТОРА: ${authorRating}`
+                                    : `RATING: ${rating} / AUTHOR RATING: ${authorRating}`
+                            }
+                        </span>
                     </div>
                     <div className={style.product}>
-                        PRODUCT: {product}
+                        {
+                            language === 'RU'
+                                ? `ПРОДУКТ: ${product}`
+                                : `PRODUCT: ${product}`
+                        }
                     </div>
 
-                    <div className={style.category}>category: {category}</div>
+                    <div className={style.category}>
+                        {
+                            language === 'RU'
+                                ? `КАТЕГОРИЯ: ${category}`
+                                : `category: ${category}`
+                        }
+
+                    </div>
                     <div className={style.hashtags}>
                         {
                             hashtags.map((h, i) =>
@@ -75,27 +116,11 @@ export const ReviewCover: React.FC<ReviewCoverPropsType> = (
                         }
                     </div>
                 </div>
-                {created && <div className={style.created}>CREATED: {rewriteDate(created)}</div>}
+                {
+                    created && <div className={style.created}>
+                        {language === 'RU' ? 'ОПУБЛИКОВАНО' : 'CREATED'}: {rewriteDate(created)}</div>
+                }
             </div>
-            {
-                user && user.id === authorID &&
-                <div className={style.btnBlock}>
-                    <Button className={style.btn} variant='outline-success' onClick={getToEditMode}>
-                        Edit
-                    </Button>
-                    <Button className={style.btn} variant='outline-danger' onClick={deleteItem}>
-                        Delete
-                    </Button>
-                </div>
-            }
-            {
-                user && user.id !== authorID && user.role === 'ADMIN' &&
-                <div className={style.btnBlock}>
-                    <Button className={style.btn} variant='outline-success' onClick={getToEditMode}>
-                        Edit
-                    </Button>
-                </div>
-            }
             <NavLink to={`/reviews/edit/${id}`} ref={link}/>
         </Figure>
     );
@@ -105,13 +130,14 @@ type ReviewCoverPropsType = {
     id: string
     rating: number
     authorRating: number
-    authorID:string
+    authorID: string
     name: string
     product: string
     hashtags: string[]
     hashtagSearch: (hashtag: string) => void
     category: string
     created: Date
+    language: LangType
 
-    user:UserResponseType
+    user: UserResponseType
 }

@@ -11,9 +11,11 @@ import {Rating} from '@mui/material';
 import {ReviewType} from '../../../../api/reviewApi';
 import {Loader} from '../../../с9-additions/loader/Loader';
 import {UserResponseType} from '../../../../api/authApi';
+import {LangType} from '../../../../store/reducers/appReducer';
 
-export const EditReview = React.memo(() => {
+export const EditReview = () => {
     const id = useParams().id;
+    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     const item = useSelector<RootState, ReviewType>(state => state.showReviewReducer.item);
     const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
     const isAuth = useSelector<RootState, boolean>(state => state.authReducer.isAuth);
@@ -37,7 +39,11 @@ export const EditReview = React.memo(() => {
     useEffect(() => {
         dispatch(setIsResetThunk());
         id && dispatch(getReviewsItemThunk({id}));
-    }, []);
+    }, [id, dispatch]);
+
+    useEffect(() => {
+        setImage(item.image)
+    }, [item.image]);
     const changeFile = async (e: ChangeEvent<HTMLInputElement>) => {
         const reader = new FileReader();
         const file = e.currentTarget.files && e.currentTarget.files[0];
@@ -73,11 +79,9 @@ export const EditReview = React.memo(() => {
         setImage(item.image);
         return {isReset: true};
     }
-
     if (!isAuth) return <Navigate to={'/'}/>
     if (isReset) return <Navigate to={'/reviews'}/>
-    if (id !== item.id) return <Loader/>
-    return (
+    if (id === item.id) return (
         <div className={style.createReview}>
             <div className={style.drop}>
                 <Figure.Image
@@ -93,11 +97,11 @@ export const EditReview = React.memo(() => {
                     ref={fileRef}
                 />
                 <div className={style.rating}>
-                    <div className={style.label}>Your rating:</div>
+                    <div className={style.label}>{language === 'RU' ? 'Ваша оценка' : 'Your rating:'}</div>
                     <Rating
                         value={rating}
                         max={10}
-                        readOnly={user.role === 'ADMIN'}
+                        readOnly={user.role !== 'ADMIN' && user.id !== item.authorID}
                         onChange={(event, value) => value && setRating(value)}
                     />
                 </div>
@@ -105,5 +109,6 @@ export const EditReview = React.memo(() => {
             <CreateReviewForm callBack={editReview} values={valuesForForm}/>
         </div>
     )
-});
+    return <Loader/>
+};
 

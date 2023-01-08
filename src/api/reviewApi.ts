@@ -25,8 +25,12 @@ export const reviewApi = {
     deleteReview(id: string, authorID: string) {
         return $api.delete(`/reviews/${id}/${authorID}`);
     },
-    editReview(form: FormData){
+    editReview(form: FormData) {
         return $api.post('/reviews/edit', form);
+    },
+    getRatedReviews(data: { id: string, currentPage: number, sort: string, category: string }) {
+        const {id, category, currentPage, sort} = data
+        return $api.get(`/reviews/profile/${id}?page=${currentPage}&category=${category}&sort=${sort}`);
     }
 }
 

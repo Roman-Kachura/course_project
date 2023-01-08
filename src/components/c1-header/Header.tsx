@@ -1,14 +1,17 @@
-import React, {MouseEvent} from 'react';
-import {Container, Nav, Navbar, NavDropdown} from 'react-bootstrap';
-import style from './Header.module.scss';
+import React, {ChangeEvent, MouseEvent, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState, useAppDispatch} from '../../store/store';
 import {UserResponseType} from '../../api/authApi';
 import {logoutThunk} from '../../store/reducers/authReducer';
-import {NavLink} from 'react-router-dom';
+import {LangType, setAppTheme, setLanguage} from '../../store/reducers/appReducer';
+import {AppNavbar} from './AppNavbar';
+import {AppMobileNavbar} from './AppMobileNavbar';
 
 export const Header: React.FC = () => {
+    const [isMobileMenu, setIsMobileMenu] = useState(false);
     const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
+    const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
+    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     const isAuth = useSelector<RootState, boolean>(state => state.authReducer.isAuth);
     const dispatch = useAppDispatch();
     const logout = (e: MouseEvent<HTMLElement>) => {
@@ -16,64 +19,40 @@ export const Header: React.FC = () => {
         dispatch(logoutThunk({id: user.id}));
     }
 
-    return (
-        <Navbar bg="dark" variant="dark" className={style.header}>
-            <Container className={style.container}>
-                <div className={style.firstDiv}>
-                    {user &&
-                        <div className={style.profile}>
-                            <div className={style.image}>
-                                <img
-                                    src={user.photo}/>
-                            </div>
-                            <h6 className={style.name}>{user.name}</h6>
-                        </div>
-                    }
-                    <Navbar.Collapse className={style.collapse}>
-                        {
-                            isAuth
-                                ? <NavDropdown title="Reviews" className={style.dropdown}>
-                                    <NavDropdown.Item className={style.dropdownItem} href="/create-review">
-                                        Create review
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item className={style.dropdownItem} href="/my-reviews">
-                                        My reviews
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item className={style.dropdownItem} href="/reviews">
-                                        All Reviews
-                                    </NavDropdown.Item>
-                                </NavDropdown>
-                                : <NavLink to={'/reviews'} className={style.headerLink}>Reviews</NavLink>
-                        }
+    const changeTheme = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatch(setAppTheme(!isDarkTheme));
+    }
 
-                    </Navbar.Collapse>
-                </div>
-                <Navbar className={style.navbar}>
-                    {user
-                        ? <Navbar.Collapse className={style.collapse}>
-                            <Nav className={style.nav}>
-                                <NavDropdown title="Options" className={style.dropdown}>
-                                    {user.role === 'ADMIN' &&
-                                        <NavDropdown.Item className={style.dropdownItem}
-                                                          href="/categories">Category</NavDropdown.Item>
-                                    }
-                                    {user.role === 'ADMIN' &&
-                                        <NavDropdown.Item className={style.dropdownItem}
-                                                          href="/users">Users</NavDropdown.Item>
-                                    }
-                                    <NavDropdown.Item className={style.dropdownItem}
-                                                      href="/setting">Setting</NavDropdown.Item>
-                                    <NavDropdown.Divider/>
-                                    <NavDropdown.Item className={`${style.dropdownItem} ${style.logout}`}
-                                                      onClick={logout}
-                                                      href="">Logout</NavDropdown.Item>
-                                </NavDropdown>
-                            </Nav>
-                        </Navbar.Collapse>
-                        : <NavLink to="/login" className={style.loginLink}>Login</NavLink>
-                    }
-                </Navbar>
-            </Container>
-        </Navbar>
+    const changeLanguage = (e: ChangeEvent<HTMLSelectElement>) => {
+        dispatch(setLanguage(e.currentTarget.value));
+    }
+
+    const changeMenu = () => setIsMobileMenu(window.innerWidth < 992);
+    useEffect(() => {
+        if (window.innerWidth < 992) setIsMobileMenu(true);
+        window.addEventListener('resize', changeMenu);
+        return () => {
+            window.removeEventListener('resize', changeMenu);
+        }
+    }, [window]);
+    if (isMobileMenu)
+        return <AppMobileNavbar
+            changeLanguage={changeLanguage}
+            user={user}
+            language={language}
+            isDarkTheme={isDarkTheme}
+            logout={logout}
+            changeTheme={changeTheme} isAuth={isAuth}
+        />
+    return (
+        <AppNavbar
+            changeLanguage={changeLanguage}
+            user={user}
+            language={language}
+            isAuth={isAuth}
+            logout={logout}
+            changeTheme={changeTheme}
+            isDarkTheme={isDarkTheme}
+        />
     )
 }

@@ -2,8 +2,8 @@ import {$api} from './api';
 import {AxiosResponse} from 'axios';
 
 export const commentsApi = {
-    getComments(id: string) {
-        return $api.get<AxiosResponse, AxiosResponse<CommentType[]>>(`/comments/${id}`);
+    getComments(id: string, page: number) {
+        return $api.get<AxiosResponse, AxiosResponse<CommentType[]>>(`/comments/${id}?page=${page}`);
     },
     createComment(data: CreateCommentValuesType) {
         return $api.post<AxiosResponse, AxiosResponse<CommentType>>(`/comments`, data);

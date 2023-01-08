@@ -4,12 +4,21 @@ import {RootState} from '../../../../store/store';
 import {Formik} from 'formik';
 import {Button, Form} from 'react-bootstrap';
 import style from './Create.module.scss';
+import {LangType} from '../../../../store/reducers/appReducer';
 
 export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack, values}) => {
     const categories = useSelector<RootState, string[]>(state => state.categoriesReducer.categories);
+    const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
+    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     return (
         <Formik
-            initialValues={values ? values : {name: '', product: '', category: categories[0], description: '', hashtags: ''}}
+            initialValues={values ? values : {
+                name: '',
+                product: '',
+                category: categories[0],
+                description: '',
+                hashtags: ''
+            }}
             validate={values => {
                 const errors = {name: '', product: '', description: '', hashtags: ''};
                 if (values.name.length === 0 || values.name.length > 100) {
@@ -58,16 +67,16 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                   handleSubmit,
                   isSubmitting,
               }) => (
-                <Form className={style.form} onSubmit={handleSubmit}>
+                <Form className={isDarkTheme ? style.form : `${style.form} ${style.light}`} onSubmit={handleSubmit}>
                     <div className={style.groupOne}>
                         <Form.Group className={style.group}>
                             <Form.Label className={!!errors.name && touched.name ? style.errorText : style.label}>
-                                Title for your review:
+                                {language === 'RU' ? 'Заголовок для вашего обзора' : 'Title for your review:'}
                             </Form.Label>
                             <Form.Control
                                 type="text"
                                 name="name"
-                                placeholder="Max 100 characters"
+                                placeholder={language === 'RU' ? 'Максимум 100 знаков:' : "Max 100 characters"}
                                 value={values.name}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
@@ -79,12 +88,12 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                         <Form.Group className={style.group}>
                             <Form.Label
                                 className={!!errors.product && touched.product ? style.errorText : style.label}>
-                                Product name:
+                                {language === 'RU' ? 'Название продука' : 'Product name:'}
                             </Form.Label>
                             <Form.Control
                                 type="text"
                                 name="product"
-                                placeholder="Max 100 characters"
+                                placeholder={language === 'RU' ? 'Максимум 100 знаков:' : "Max 100 characters"}
                                 value={values.product}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
@@ -97,7 +106,9 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                     </div>
                     <div className={style.groupTwo}>
                         <Form.Group className={style.group}>
-                            <Form.Label className={style.label}>Choose category:</Form.Label>
+                            <Form.Label className={style.label}>
+                                {language === 'RU' ? 'Выберите категорию:' : 'Choose category:'}
+                            </Form.Label>
                             <Form.Select name="category" value={values.category} onChange={handleChange}>
                                 {categories.map((c, i) => <option key={i} value={c}>{c}</option>)}
                             </Form.Select>
@@ -105,7 +116,7 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                         <Form.Group className={style.group}>
                             <Form.Label
                                 className={!!errors.hashtags && touched.hashtags ? style.errorText : style.label}>
-                                Hashtags:
+                                {language === 'RU' ? 'Тэги:' : 'Hashtags:'}
                             </Form.Label>
                             <Form.Control
                                 as="textarea"
@@ -113,7 +124,7 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                                 name="hashtags"
                                 value={values.hashtags}
                                 className={!!errors.hashtags && touched.hashtags ? style.errorInput : ''}
-                                placeholder="#hashtags..."
+                                placeholder={language === 'RU' ? '#Тэги:' : '#Hashtags'}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 style={{resize: 'none'}}
@@ -125,14 +136,17 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                     <Form.Group className={style.description}>
                         <Form.Label
                             className={!!errors.description && touched.description ? style.errorText : style.label}>
-                            Description:
+                            {language === 'RU' ? 'Описание:' : 'Description:'}
                         </Form.Label>
                         <Form.Control
                             as="textarea"
                             rows={8}
                             className={!!errors.description && touched.description ? style.errorText : ''}
                             name="description"
-                            placeholder={`Min 1 character\nMax 5000 characters`}
+                            placeholder={
+                                language === 'RU'
+                                    ? `Минимум 1 символ\nМаксимум 5000`
+                                    : `Min 1 character\nMax 5000 characters`}
                             value={values.description}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -140,7 +154,9 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                         {!!errors.description && touched.description &&
                             <Form.Text className={style.errorText}>{errors.description}</Form.Text>}
                     </Form.Group>
-                    <Button type="submit" className={style.btn} disabled={isSubmitting}>Publish</Button>
+                    <Button type="submit" className={style.btn} disabled={isSubmitting}>
+                        {language === 'RU' ? 'Опубликовать' : 'Publish'}
+                    </Button>
                 </Form>
             )}
         </Formik>

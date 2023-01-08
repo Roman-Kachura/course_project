@@ -1,11 +1,14 @@
-import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {Button, Form} from 'react-bootstrap';
 import style from './Comments.module.scss';
-import {useAppDispatch} from '../../../store/store';
+import {RootState, useAppDispatch} from '../../../store/store';
 import {createCommentThunk} from '../../../store/reducers/commentsReducer';
-import {CommentType} from '../../../api/commentsApi';
+import {useSelector} from 'react-redux';
+import {LangType} from '../../../store/reducers/appReducer';
 
 export const AddComment: React.FC<AddCommentPropsType> = ({authorID, reviewID}) => {
+    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
+    const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
     const dispatch = useAppDispatch();
     const [value, setValue] = useState('');
     const l = value.length;
@@ -20,12 +23,12 @@ export const AddComment: React.FC<AddCommentPropsType> = ({authorID, reviewID}) 
         if (e.key === 'Escape') setValue('');
     }
     return (
-        <div className={style.addComment}>
+        <div className={isDarkTheme ? style.addComment : `${style.addComment} ${style.light}`}>
             <Form.Control
                 as="textarea"
                 rows={3}
                 className={style.textarea}
-                placeholder="Your comment..."
+                placeholder={language === 'RU' ? 'Ваш комментарий...' : 'Your comment...'}
                 value={value}
                 onChange={changeValue}
                 onKeyDown={onKeyPressHandler}
@@ -34,7 +37,9 @@ export const AddComment: React.FC<AddCommentPropsType> = ({authorID, reviewID}) 
                 className={value.length > 1000 ? `${style.count} ${style.error}` : `${style.count}`}>
                 {value.length}/1000
             </div>
-            <Button onClick={addComment}>SEND</Button>
+            <Button onClick={addComment}>
+                {language === 'RU' ? 'ОТПРАВИТЬ' : 'SEND'}
+            </Button>
         </div>
 
     )

@@ -4,8 +4,11 @@ import {RootState, useAppDispatch} from '../../../store/store';
 import style from './Categories.module.scss';
 import {Button, Form, Table} from 'react-bootstrap';
 import {createCategoryThunk, getCategoriesThunk} from '../../../store/reducers/categoriesReducer';
+import {LangType} from '../../../store/reducers/appReducer';
 
 export const Categories: React.FC = () => {
+    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
+    const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
     const categories = useSelector<RootState, string[]>(state => state.categoriesReducer.categories);
     const dispatch = useAppDispatch();
     const [value, setValue] = useState('');
@@ -27,11 +30,13 @@ export const Categories: React.FC = () => {
         dispatch(getCategoriesThunk());
     }, [dispatch])
     return (
-        <div className={style.categories}>
-            <Table className={style.table} striped bordered hover variant="dark">
+        <div className={isDarkTheme ? style.categories : `${style.categories} ${style.light}`}>
+            <Table className={style.table} striped bordered hover variant={isDarkTheme ? 'dark' : 'light'}>
                 <thead>
                 <tr>
-                    <th>CATEGORIES</th>
+                    <th>
+                        {language === 'RU' ? 'КАТЕГОРИИ' : 'CATEGORIES'}
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,10 +46,15 @@ export const Categories: React.FC = () => {
                 </tbody>
             </Table>
             <div className={style.addBlock}>
-                <Form.Control type="text" className={!error ? `${style.input}` : `${style.input} ${style.error}`}
-                              value={value} onChange={changeValue}/>
+                <Form.Control
+                    placeholder={language === 'RU' ? 'Новая категория' : 'New category'}
+                    type="text" className={!error ? `${style.input}` : `${style.input} ${style.error}`}
+                    value={value} onChange={changeValue}
+                />
                 {error && <div className={style.errorText}>{error}</div>}
-                <Button onClick={onClickHandler}>Add category</Button>
+                <Button onClick={onClickHandler}>
+                    {language === 'RU' ? 'ДОБАВИТЬ КАТЕГОРИЮ' : 'ADD CATEGORY'}
+                </Button>
             </div>
         </div>
     )

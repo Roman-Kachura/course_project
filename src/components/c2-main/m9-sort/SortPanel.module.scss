@@ -1,0 +1,53 @@
+.sortPanel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+
+  .select {
+    width: 200px;
+    height: 40px;
+    margin-right: 20px;
+    border: 1px solid rgba(33, 37, 41);
+    background: rgba(33, 37, 41);
+    color: #fff;
+
+    &:focus {
+      border: 1px solid rgba(33, 37, 41);
+      background: rgba(33, 37, 41);
+      color: #fff;
+    }
+  }
+
+  &.light {
+    select {
+      color: #000;
+      border: 1px solid #ddd;
+      background: rgba(248, 249, 250, 1);
+
+      &:focus {
+        border: 1px solid #ddd;
+        background: rgba(248, 249, 250, 1);
+        color: #000;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .sortPanel {
+    justify-content: start;
+    align-items: flex-start;
+    flex-direction: column;
+
+    .select{
+      margin: 0 0 10px 0;
+    }
+
+    .sortBtn {
+      width: 200px;
+      margin: 0;
+    }
+  }
+}

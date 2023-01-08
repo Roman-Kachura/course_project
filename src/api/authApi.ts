@@ -34,6 +34,7 @@ export type UserResponseType = {
     email: string
     role: string
     photo: string
+    rated:{id:string,value:number}[]
 }
 export type ErrorResponseType = {
     status: number

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, LegacyRef, useRef, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useRef, useState} from 'react';
 import style from './Setting.module.scss';
 import {useSelector} from 'react-redux';
 import {RootState, useAppDispatch} from '../../../store/store';
@@ -6,6 +6,7 @@ import {UserResponseType} from '../../../api/authApi';
 import {Navigate} from 'react-router-dom';
 import {Button, Form} from 'react-bootstrap';
 import {changeUserData} from '../../../store/reducers/usersReducer';
+import {LangType} from '../../../store/reducers/appReducer';
 
 export const SettingContainer = React.memo(() => {
     const isAuth = useSelector<RootState, boolean>(state => state.authReducer.isAuth);
@@ -14,6 +15,8 @@ export const SettingContainer = React.memo(() => {
 })
 
 const Setting = () => {
+    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
+    const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
     const fileRef = useRef<any>(null);
     const {name, photo, id} = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
     const [value, setValue] = useState(name);
@@ -31,6 +34,10 @@ const Setting = () => {
         if ((/^[\w]+$/gi).test(e.currentTarget.value)) {
 
         }
+    }
+
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if(e.key === 'Enter') changeSetting();
     }
     const onChangeFileHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const reader = new FileReader();
@@ -62,7 +69,7 @@ const Setting = () => {
 
     }
     return (
-        <div className={style.setting}>
+        <div className={isDarkTheme ? style.setting : `${style.setting} ${style.light}`}>
             <div className={style.wrapper}>
                 <div className={style.photo}>
                     <div className={style.image}>
@@ -80,13 +87,16 @@ const Setting = () => {
                 <div className={style.text}>
                     <Form.Control
                         type="text"
-                        placeholder="Enter new name"
+                        placeholder={language === 'RU' ? 'Новое имя' : 'New name'}
                         value={value}
                         onChange={onChangeHandler}
+                        onKeyDown={onKeyPressHandler}
                         className={!error ? `${style.input}` : `${style.input} ${style.error}`}
                     />
                     {error && <div className={style.error}>{error}</div>}
-                    <Button className={style.btn} onClick={changeSetting}>Change</Button>
+                    <Button className={style.btn} onClick={changeSetting}>
+                        {language === 'RU' ? 'ИЗМЕНИТЬ' : 'CHANGE'}
+                    </Button>
                 </div>
             </div>
         </div>

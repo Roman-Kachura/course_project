@@ -39,29 +39,40 @@
       }
       .collapse{
         width: 300px;
-        height: 100px;
+        height: 130px;
         padding: 10px 0;
         position: absolute;
         border-radius: 5px;
         background: rgba(33,37,41);
-        bottom:-110px;
+        bottom:-140px;
         overflow: hidden;
         overflow-y: auto;
         left: 0;
         z-index: 1;
 
-        button{
+        a{
           display: block;
           width: 100%;
           text-align: left;
+          text-decoration: none;
           padding: 5px 15px;
           background: rgba(0,0,0,0);
           border: none;
           color:mediumpurple;
           transition: .3s;
 
+          small{
+            display: block;
+            font-size: 12px;
+            color:#ff9900;
+          }
+
           &:hover{
-            background: #333;
+            color: #634a9a;
+            background: #d6d8d9;
+            small{
+              color: #e38a04;
+            }
           }
         }
       }
@@ -69,5 +80,72 @@
 
     .searchBtn {
       height: 40px;
+    }
+
+    &.light{
+      select{
+        color:#000;
+        border: 1px solid #ddd;
+        background: rgba(248,249,250,1);
+        &:focus{
+          border: 1px solid #ddd;
+          background: rgba(248,249,250,1);
+          color:#000;
+        }
+      }
+      .inputBlock{
+        .input{
+          border: 1px solid #ddd;
+          background: rgba(248,249,250,1);
+          color:#000;
+
+          &:focus{
+            border: 1px solid #ddd;
+            background: rgba(248,249,250,1);
+            color:#000;
+          }
+        }
+      }
+      .collapse{
+        border: 1px solid #ddd;
+        background:rgba(248,249,250,1) ;
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .form{
+      margin-bottom: 20px;
+      display: block;
+      .select{
+        width: 400px;
+        margin-bottom: 10px;
+      }
+      .inputBlock{
+        width: 400px;
+        margin-bottom: 10px;
+        .collapse{
+          width: 300px;
+          left: 100px;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 576px){
+    .form{
+      padding: 0 10px;
+      .select{
+        width: 200px;
+        margin-bottom: 10px;
+      }
+      .inputBlock{
+        width: 200px;
+        margin-bottom: 10px;
+        .collapse{
+          width: 200px;
+          left: 100px;
+        }
+      }
     }
   }

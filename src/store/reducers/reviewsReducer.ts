@@ -1,16 +1,15 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {reviewApi, ReviewResponseType, ReviewType, SearchType} from '../../api/reviewApi';
-import {CreateReviewValuesType} from '../../components/c2-main/m0-reviews/create/CreateReviewForm';
+import {reviewApi, ReviewType, SearchType} from '../../api/reviewApi';
 import {setIsReset} from './showReviewReducer';
 import {setAppStatus} from './appReducer';
 import {getCategoriesThunk} from './categoriesReducer';
-import {setSearchParams, setSearchParamsThunk} from './searchReducer';
+import {setSearchParams} from './searchReducer';
 
 const reviewsInitialState: ReviewsInitialStateType = {
     reviews: [],
     currentPage: 1,
     pagesCount: 1,
-    sort: [],
+    sort: ['DATE UP', 'DATE DOWN', 'RATING UP', 'RATING DOWN'],
 }
 
 export const getReviewsThunk = createAsyncThunk('get-reviews', async (arg: { currentPage: number, search: SearchType }, thunkAPI) => {
@@ -59,11 +58,11 @@ const reviewsSlice = createSlice({
             state.currentPage = currentPage;
             state.pagesCount = pagesCount;
             state.sort = sort;
-        },
+        }
     }
 });
 
-const {setReviewsState} = reviewsSlice.actions;
+export const {setReviewsState} = reviewsSlice.actions;
 
 export default reviewsSlice.reducer;
 export type ReviewsInitialStateType = {

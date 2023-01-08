@@ -1,7 +1,9 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const AppReducerInitialState: AppReducerInitialStateType = {
-    status: 'stop'
+    status: 'stop',
+    isDarkTheme: false,
+    language: 'EN'
 }
 
 const appSlice = createSlice({
@@ -12,15 +14,24 @@ const appSlice = createSlice({
             if (action.payload === 'loading' || action.payload === 'stop') {
                 state.status = action.payload;
             }
+        },
+        setAppTheme(state, action) {
+            state.isDarkTheme = action.payload;
+        },
+        setLanguage(state, action) {
+            state.language = action.payload;
         }
     }
 });
 
 
-export const {setAppStatus} = appSlice.actions;
+export const {setAppStatus, setAppTheme, setLanguage} = appSlice.actions;
 export default appSlice.reducer;
 export type AppReducerInitialStateType = {
     status: AppStatusType
+    isDarkTheme: boolean
+    language: LangType
 };
 
 export type AppStatusType = 'loading' | 'stop';
+export type LangType = 'RU' | 'EN';

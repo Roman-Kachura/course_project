@@ -1,17 +1,18 @@
 import React, {ChangeEvent, RefObject, useEffect, useRef, useState} from 'react';
 import style from './Create.module.scss';
 import {RootState, useAppDispatch} from '../../../../store/store';
-import {getReviewsThunk, createReviewThunk} from '../../../../store/reducers/reviewsReducer';
+import {createReviewThunk} from '../../../../store/reducers/reviewsReducer';
 import {Figure, Form} from 'react-bootstrap';
-import defaultImage from '../default-image.png';
 import {CreateReviewForm, CreateReviewValuesType} from './CreateReviewForm';
 import {useSelector} from 'react-redux';
 import {UserResponseType} from '../../../../api/authApi';
 import {Navigate} from 'react-router-dom';
 import {setIsResetThunk} from '../../../../store/reducers/showReviewReducer';
 import {Rating} from '@mui/material';
+import {LangType} from '../../../../store/reducers/appReducer';
 
-export const CreateReview = React.memo(({edit}: CreateReviewPropsType) => {
+export const CreateReview = React.memo(() => {
+    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
     const isAuth = useSelector<RootState, boolean>(state => state.authReducer.isAuth);
     const [file, setFile] = useState<File>();
@@ -77,7 +78,7 @@ export const CreateReview = React.memo(({edit}: CreateReviewPropsType) => {
                 {
                     !image
                         ? <div className={!fileError ? style.drag : `${style.drag} ${style.error}`} onClick={pickFile}>
-                            SELECT FILE
+                            {language === 'RU' ? 'ВЫБЕРИТЕ ФАЙЛ' : 'SELECT FILE'}
                         </div>
                         : <Figure.Image
                             className={style.image}
@@ -94,7 +95,7 @@ export const CreateReview = React.memo(({edit}: CreateReviewPropsType) => {
                     ref={fileRef}
                 />
                 <div className={style.rating}>
-                    <div className={style.label}>Your rating:</div>
+                    <div className={style.label}>{language === 'RU' ? 'Ваша оценка' : 'Your rating:'}</div>
                     <Rating value={rating} max={10} onChange={(event, value) => value && setRating(value)}/>
                 </div>
                 {fileError && <div className={style.fileError}>{fileError}</div>}
@@ -103,8 +104,4 @@ export const CreateReview = React.memo(({edit}: CreateReviewPropsType) => {
         </div>
     )
 });
-
-type CreateReviewPropsType = {
-    edit?: boolean
-}
 

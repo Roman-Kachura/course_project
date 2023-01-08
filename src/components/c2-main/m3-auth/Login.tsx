@@ -7,14 +7,17 @@ import {Navigate, NavLink} from 'react-router-dom';
 import {RootState, useAppDispatch} from '../../../store/store';
 import {loginThunk} from '../../../store/reducers/authReducer';
 import {useSelector} from 'react-redux';
+import {LangType} from '../../../store/reducers/appReducer';
 
 export const Login: React.FC = () => {
     const isAuth = useSelector<RootState,boolean>(state => state.authReducer.isAuth);
+    const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
+    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     if(isAuth) return <Navigate to={'/content'}/>
     return (
-        <div className={style.auth}>
+        <div className={isDarkTheme ? style.auth : `${style.auth} ${style.light}`}>
             <div className={style.item}>
-                <h3>Sign In</h3>
+                <h3>{language === 'RU' ? 'Войти' : 'Sign In'}</h3>
                 <LoginForm/>
             </div>
         </div>
@@ -23,6 +26,7 @@ export const Login: React.FC = () => {
 
 const LoginForm: React.FC = () => {
     const dispatch = useAppDispatch();
+    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     return (
         <Formik
             initialValues={{email: '', password: '', name: ''}}
@@ -66,7 +70,7 @@ const LoginForm: React.FC = () => {
                             className={`${style.input} ${!!errors.email && touched.email && style.error}`}
                             type="email"
                             name="email"
-                            placeholder="Email*"
+                            placeholder={language === 'RU' ? 'Почта*' : 'Email*'}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.email}
@@ -81,7 +85,7 @@ const LoginForm: React.FC = () => {
                             className={`${style.input} ${!!errors.password && touched.password && style.error}`}
                             type="password"
                             name="password"
-                            placeholder="Password*"
+                            placeholder={language === 'RU' ? 'Пароль*' : 'Password*'}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.password}
@@ -95,11 +99,11 @@ const LoginForm: React.FC = () => {
                         type="submit"
                         className={style.button}
                         variant="primary">
-                        Sing In
+                        {language === 'RU' ? 'Войти' : 'Sing In'}
                     </Button>
 
 
-                    <NavLink to="/registration">Create an account</NavLink>
+                    <NavLink to="/registration">{language === 'RU' ? 'Создать аккаунт' : 'Create an account'}</NavLink>
                 </form>
             )}
         </Formik>
