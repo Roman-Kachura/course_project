@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './Profile.module.scss';
 import {UserResponseType} from '../../../api/authApi';
-import {NavLink, Table} from 'react-bootstrap';
+import {Table} from 'react-bootstrap';
 import {Rating} from '@mui/material';
 import {ReviewType} from '../../../api/reviewApi';
 import {useSelector} from 'react-redux';
@@ -10,6 +10,7 @@ import {ProfileInitialStateType} from '../../../store/reducers/profileReducer';
 import {AppPagination} from '../../с9-additions/AppPagination';
 import {SortPanel} from '../m9-sort/SortPanel';
 import {LangType} from '../../../store/reducers/appReducer';
+import {NavLink} from 'react-router-dom';
 
 export const UserRatedReviewsTable: React.FC<UserRatedReviewsTablePropsType> = (
     {
@@ -54,7 +55,7 @@ const UserReviewsTableRow: React.FC<UserRatedReviewTableRowPropsType> = ({r}) =>
     return (
         <tr key={r.id}>
             <td><img src={r.image} className={style.image}/></td>
-            <td><NavLink href={`/reviews/${r.id}`}>{r.name}</NavLink></td>
+            <td><NavLink to={`/reviews/${r.id}`}>{r.name}</NavLink></td>
             <td><Rating max={5} value={r.rating} readOnly={true}/></td>
         </tr>
     )

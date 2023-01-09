@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {RootState, useAppDispatch} from '../../../store/store';
-import {clearUsersThunk, getUsersThunk, UserInitialStateType} from '../../../store/reducers/usersReducer';
+import {getUsersThunk, UserInitialStateType} from '../../../store/reducers/usersReducer';
 import {useSelector} from 'react-redux';
 import {UserResponseType} from '../../../api/authApi';
 import {Table} from 'react-bootstrap';

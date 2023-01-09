@@ -8,11 +8,11 @@ import {
     Form,
     Navbar,
     NavDropdown,
-    NavLink,
     Offcanvas
 } from 'react-bootstrap';
 import {UserResponseType} from '../../api/authApi';
 import {LangType} from '../../store/reducers/appReducer';
+import {NavLink} from 'react-router-dom';
 
 export const AppMobileNavbar: React.FC<AppMobileNavbarPropsType> = (
     {
@@ -54,7 +54,7 @@ export const AppMobileNavbar: React.FC<AppMobileNavbarPropsType> = (
                                 <img
                                     src={user.photo}/>
                             </div>
-                            <NavLink href={`/users/${user.id}`} className={style.name}>{user.name}</NavLink>
+                            <NavLink to={`/users/${user.id}`} className={style.name}>{user.name}</NavLink>
                         </div>
                     }
                     <Form.Check
@@ -74,13 +74,13 @@ export const AppMobileNavbar: React.FC<AppMobileNavbarPropsType> = (
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header>{language === 'RU' ? 'ОБЗОРЫ' : 'REVIEWS'}</Accordion.Header>
                                     <Accordion.Body>
-                                        <NavLink className={style.reviewsLink} href="/create-review">
+                                        <NavLink className={style.reviewsLink} to="/create-review">
                                             {language === 'RU' ? 'Создать обзор' : 'Create review'}
                                         </NavLink>
-                                        <NavLink className={style.reviewsLink} href="/my-reviews">
+                                        <NavLink className={style.reviewsLink} to="/my-reviews">
                                             {language === 'RU' ? 'Мои обзоры' : 'My reviews'}
                                         </NavLink>
-                                        <NavLink className={style.reviewsLink} href="/reviews">
+                                        <NavLink className={style.reviewsLink} to="/reviews">
                                             {language === 'RU' ? 'Все обзоры' : 'All Reviews'}
                                         </NavLink>
                                     </Accordion.Body>
@@ -89,16 +89,16 @@ export const AppMobileNavbar: React.FC<AppMobileNavbarPropsType> = (
                                     <Accordion.Header>{language === 'RU' ? 'ОПЦИИ' : 'OPTION'}</Accordion.Header>
                                     <Accordion.Body>
                                         {user.role === 'ADMIN' &&
-                                            <NavLink className={style.optionsLink} href="/categories">
+                                            <NavLink className={style.optionsLink} to="/categories">
                                                 {language === 'RU' ? 'Категории' : 'Categories'}
                                             </NavLink>
                                         }
                                         {user.role === 'ADMIN' &&
-                                            <NavLink className={style.optionsLink} href="/users">
+                                            <NavLink className={style.optionsLink} to="/users">
                                                 {language === 'RU' ? 'Пользователи' : 'Users'}
                                             </NavLink>
                                         }
-                                        <NavLink className={style.optionsLink} href="/setting">
+                                        <NavLink className={style.optionsLink} to="/setting">
                                             {language === 'RU' ? 'Настройки' : 'Setting'}
                                         </NavLink>
                                         <NavDropdown.Item className={`${style.optionsLink} ${style.logout}`}
@@ -110,8 +110,8 @@ export const AppMobileNavbar: React.FC<AppMobileNavbarPropsType> = (
                                 </Accordion.Item>
                             </Accordion>
                             : <div>
-                                <NavLink className={style.reviewsLink} href="reviews">{language === 'RU' ? 'Обзоры' : 'Reviews'}</NavLink>
-                                <NavLink href="/login" className={style.loginLink}>
+                                <NavLink className={style.reviewsLink} to="/reviews">{language === 'RU' ? 'Обзоры' : 'Reviews'}</NavLink>
+                                <NavLink to="/login" className={style.loginLink}>
                                     {language === 'RU' ? 'Войти' : 'Login'}
                                 </NavLink>
                             </div>

@@ -5,13 +5,14 @@ import {ReviewsInitialStateType} from '../../../store/reducers/reviewsReducer';
 import {SearchParamsType} from '../../../store/reducers/searchReducer';
 import style from './Profile.module.scss';
 import {SortPanel} from '../m9-sort/SortPanel';
-import {Button, NavLink, Table} from 'react-bootstrap';
+import {Button, Table} from 'react-bootstrap';
 import {AppPagination} from '../../с9-additions/AppPagination';
 import {deleteItemThunk} from '../../../store/reducers/showReviewReducer';
 import {Rating} from '@mui/material';
 import {UserResponseType} from '../../../api/authApi';
 import {ReviewType} from '../../../api/reviewApi';
 import {LangType} from '../../../store/reducers/appReducer';
+import {NavLink} from 'react-router-dom';
 
 export const UserReviewsTable: React.FC<UserReviewsTablePropsType> = (
     {isDarkTheme, getUserReviews, profile, user, language}
@@ -64,7 +65,7 @@ const UserReviewsTableRow: React.FC<UserReviewTableRowPropsType> = ({r, user, la
     return (
         <tr key={r.id}>
             <td><img src={r.image} className={style.image}/></td>
-            <td><NavLink href={`/reviews/${r.id}`}>{r.name}</NavLink></td>
+            <td><NavLink to={`/reviews/${r.id}`}>{r.name}</NavLink></td>
             <td><Rating max={5} value={r.rating} readOnly={true}/></td>
             <td>
                 {
@@ -92,7 +93,7 @@ const UserReviewsTableRow: React.FC<UserReviewTableRowPropsType> = ({r, user, la
                         </Button>
                     </div>
                 }
-                <NavLink href={`/reviews/edit/${r.id}`} ref={link}/>
+                <NavLink to={`/reviews/edit/${r.id}`} ref={link}/>
             </td>
         </tr>
     )
