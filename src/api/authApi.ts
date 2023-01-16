@@ -3,10 +3,13 @@ import {AxiosResponse} from 'axios';
 
 export const authApi = {
     registration(data: RegistrationValuesType) {
-        return $api.post<AxiosResponse>('/users/registration', data);
+        return $api.post<AxiosResponse,AxiosResponse<AuthResponseType>>('/users/registration', data);
+    },
+    social(data: authWithSocialValuesType) {
+        return $api.post<AxiosResponse,AxiosResponse<AuthResponseType>>('/users/social', data);
     },
     login(data: LoginValuesType) {
-        return $api.post<AxiosResponse>('/users/login', data);
+        return $api.post<AxiosResponse,AxiosResponse<AuthResponseType>>('/users/login', data);
     },
     logout(id: string) {
         return $api.delete<AxiosResponse, AxiosResponse<{}>>(`/users/logout/${id}`);
@@ -17,7 +20,16 @@ export const authApi = {
 }
 
 export type RegistrationValuesType = LoginValuesType & {
-    name: string
+    name: string,
+    uid: string,
+}
+
+export type authWithSocialValuesType = {
+    displayName:string
+    email:string
+    photoURL:string
+    uid:string
+
 }
 
 export type LoginValuesType = {
@@ -30,11 +42,12 @@ export type AuthResponseType = {
 }
 export type UserResponseType = {
     id: string
+    uid: string
     name: string
     email: string
     role: string
     photo: string
-    rated:{id:string,value:number}[]
+    rated: { id: string, value: number }[]
 }
 export type ErrorResponseType = {
     status: number

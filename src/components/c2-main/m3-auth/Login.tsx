@@ -8,17 +8,19 @@ import {RootState, useAppDispatch} from '../../../store/store';
 import {loginThunk} from '../../../store/reducers/authReducer';
 import {useSelector} from 'react-redux';
 import {LangType} from '../../../store/reducers/appReducer';
+import {SocialBar} from './SocialBar';
 
 export const Login: React.FC = () => {
-    const isAuth = useSelector<RootState,boolean>(state => state.authReducer.isAuth);
+    const isAuth = useSelector<RootState, boolean>(state => state.authReducer.isAuth);
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
     const language = useSelector<RootState, LangType>(state => state.appReducer.language);
-    if(isAuth) return <Navigate to={'/content'}/>
+    if (isAuth) return <Navigate to={'/content'}/>
     return (
         <div className={isDarkTheme ? style.auth : `${style.auth} ${style.light}`}>
             <div className={style.item}>
                 <h3>{language === 'RU' ? 'Войти' : 'Sign In'}</h3>
                 <LoginForm/>
+                <SocialBar/>
             </div>
         </div>
     )

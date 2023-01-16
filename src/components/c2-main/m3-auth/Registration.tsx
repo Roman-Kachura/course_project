@@ -8,6 +8,7 @@ import {RootState, useAppDispatch} from '../../../store/store';
 import {registrationThunk} from '../../../store/reducers/authReducer';
 import {useSelector} from 'react-redux';
 import {LangType} from '../../../store/reducers/appReducer';
+import {SocialBar} from './SocialBar';
 
 export const Registration: React.FC = () => {
     const isAuth = useSelector<RootState,boolean>(state => state.authReducer.isAuth);
@@ -19,6 +20,7 @@ export const Registration: React.FC = () => {
             <div className={style.item}>
                 <h3>{language === 'RU' ? 'Зарегистрироваться' : 'Sing Up'}</h3>
                 <RegistrationForm/>
+                <SocialBar/>
             </div>
         </div>
     )
