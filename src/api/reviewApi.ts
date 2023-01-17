@@ -31,6 +31,10 @@ export const reviewApi = {
     getRatedReviews(data: { id: string, currentPage: number, sort: string, category: string }) {
         const {id, category, currentPage, sort} = data
         return $api.get(`/reviews/profile/${id}?page=${currentPage}&category=${category}&sort=${sort}`);
+    },
+    changeText(data: { id: string, authorID: string, value: string }) {
+        const {id, authorID, value} = data;
+        return $api.put(`/reviews/${id}`, {authorID, value});
     }
 }
 
@@ -56,7 +60,6 @@ export type ReviewResponseType = {
     sort: string[]
     search: SearchType
 }
-
 export type SearchType = {
     value: string
     category: string
@@ -64,7 +67,6 @@ export type SearchType = {
     hashtags?: string
     authorID?: string
 }
-
 export type ChangeRatingResolveType = {
     isRate: boolean
     rating: number

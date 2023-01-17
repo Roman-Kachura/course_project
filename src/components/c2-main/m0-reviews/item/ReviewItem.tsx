@@ -4,7 +4,7 @@ import {NavLink, useParams} from 'react-router-dom';
 import {RootState, useAppDispatch} from '../../../../store/store';
 import {useSelector} from 'react-redux';
 import {ReviewType} from '../../../../api/reviewApi';
-import {Button, Figure} from 'react-bootstrap';
+import {Figure} from 'react-bootstrap';
 import {Rating} from '@mui/material';
 import {changeRatingThunk, getIsRate, getReviewsItemThunk} from '../../../../store/reducers/showReviewReducer';
 import {CommentType} from '../../../../api/commentsApi';
@@ -14,6 +14,8 @@ import {UserResponseType} from '../../../../api/authApi';
 import {rewriteDate} from '../../../../features/rewriteDate';
 import {getCommentsThunk} from '../../../../store/reducers/commentsReducer';
 import {LangType} from '../../../../store/reducers/appReducer';
+import {ItemText} from './ItemText';
+import {changeReviewTextThunk} from '../../../../store/reducers/reviewsReducer';
 
 export const ReviewItem = React.memo(() => {
     const {id} = useParams();
@@ -30,6 +32,10 @@ export const ReviewItem = React.memo(() => {
     const count = useSelector<RootState, number>(state => state.commentsReducer.count);
     const showMoreComments = (page: number) => {
         id && dispatch(getCommentsThunk({id, page}))
+    }
+
+    const onChangeText = (value: string) => {
+        id && dispatch(changeReviewTextThunk({id, authorID, value}));
     }
     const {
         name,
@@ -95,26 +101,35 @@ export const ReviewItem = React.memo(() => {
                             isAuth && feedbacks !== null && feedbacks !== undefined &&
                             <div className={style.feedbacks}>
                                 {language === 'RU' ? 'Оценок' : 'People rated'}: <b>{feedbacks}</b>
-                                {user.id === authorID ? null : !!myRate ? <span> / {language === 'RU' ? 'Ваша оценка' : 'Your rating'}: <b>{myRate}</b></span> :
+                                {user.id === authorID ? null : !!myRate ?
+                                    <span> / {language === 'RU' ? 'Ваша оценка' : 'Your rating'}: <b>{myRate}</b></span> :
                                     <span> / {language === 'RU' ? 'Вы не ставили оценку этому обзору!' : `You didn't rate this review!`}</span>}
                             </div>
                         }
-                        {product && <div className={style.product}>{language === 'RU' ? 'ПРОДУКТ' : 'PRODUCT'}: {product}</div>}
+                        {product &&
+                            <div className={style.product}>{language === 'RU' ? 'ПРОДУКТ' : 'PRODUCT'}: {product}</div>}
                         {author && authorRating &&
                             <div className={style.author}>
                                 {language === 'RU' ? 'АВТОР: ' : 'AUTHOR: '}
-                                <NavLink to={`/users/${authorID}`}>@{author}</NavLink> / {language === 'RU' ? ' ОЦЕНКА АВТОРА' : ' AUTHOR RATING'}: {authorRating}</div>
+                                <NavLink
+                                    to={`/users/${authorID}`}>@{author}</NavLink> / {language === 'RU' ? ' ОЦЕНКА АВТОРА' : ' AUTHOR RATING'}: {authorRating}
+                            </div>
                         }
-                        {category && <div className={style.category}>{language === 'RU' ? 'КАТЕГОРИЯ' : 'CATEGORY'}: {category}</div>}
+                        {category && <div
+                            className={style.category}>{language === 'RU' ? 'КАТЕГОРИЯ' : 'CATEGORY'}: {category}</div>}
                         {hashtags && <div className={style.hashtags}>{hashtags.join(' ')}</div>}
                     </div>
-                    {created && <div className={style.created}>{language === 'RU' ? 'ОПУБЛИКОВАНО' : 'CREATED'}: {rewriteDate(created)}</div>}
+                    {created && <div
+                        className={style.created}>{language === 'RU' ? 'ОПУБЛИКОВАНО' : 'CREATED'}: {rewriteDate(created)}</div>}
                 </div>
             </Figure>
             {text && <div className={style.description}>
                 <h4>{language === 'RU' ? 'Описание' : 'Description'}</h4>
-                <div>{text}</div>
+                {(isAuth && (user.role === 'ADMIN' || user.id === authorID)) ?
+                    <ItemText text={text} callback={onChangeText}/> :
+                    <div className={style.text}>{text}</div>}
             </div>}
+
             {
                 comments.length > 0
                     ? <Comments

@@ -48,6 +48,17 @@ export const editReviewThunk = createAsyncThunk('edit-review', async (arg: { for
     }
 });
 
+export const changeReviewTextThunk = createAsyncThunk('change-review-text', async (arg: { id: string, authorID: string, value: string }, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatus('loading'));
+    try {
+        await reviewApi.changeText(arg);
+        thunkAPI.dispatch(setAppStatus('stop'));
+    } catch (e) {
+        thunkAPI.dispatch(setAppStatus('stop'));
+        throw e;
+    }
+});
+
 const reviewsSlice = createSlice({
     name: 'reviews',
     initialState: reviewsInitialState,
