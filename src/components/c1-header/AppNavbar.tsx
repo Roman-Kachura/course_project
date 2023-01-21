@@ -25,8 +25,7 @@ export const AppNavbar: React.FC<NavbarPropsType> = (
                         {user &&
                             <div className={style.profile}>
                                 <div className={style.image}>
-                                    <img
-                                        src={user.photo}/>
+                                    <img src={user.photo}/>
                                 </div>
                                 <NavLink to={`/users/${user.id}`} className={style.name}>{user.name}</NavLink>
                             </div>
@@ -34,31 +33,21 @@ export const AppNavbar: React.FC<NavbarPropsType> = (
                         <Navbar.Collapse className={style.collapse}>
                             {
                                 isAuth
-                                    ? <NavDropdown title={language === 'RU' ? 'Обзоры' : 'Reviews'}
-                                                   className={style.dropdown}>
-                                        <NavDropdown.Item className={style.dropdownItem}>
-                                            <NavLink to="/create-review">
-                                                {language === 'RU' ? 'Создать обзор' : 'Create review'}
-                                            </NavLink>
+                                    ? <NavDropdown title={language === 'RU' ? 'Обзоры' : 'Reviews'} className={style.dropdown}>
+                                        <NavDropdown.Item className={style.dropdownItem} href="/create-review">
+                                            {language === 'RU' ? 'Создать обзор' : 'Create review'}
                                         </NavDropdown.Item>
-                                        <NavDropdown.Item className={style.dropdownItem}>
-                                            <NavLink to="/my-reviews">
-                                                {language === 'RU' ? 'Мои обзоры' : 'My reviews'}
-                                            </NavLink>
+                                        <NavDropdown.Item className={style.dropdownItem} href="/my-reviews">
+                                            {language === 'RU' ? 'Мои обзоры' : 'My reviews'}
                                         </NavDropdown.Item>
-                                        <NavDropdown.Item className={style.dropdownItem}>
-                                            <NavLink to="/
-                                            reviews">
-                                                {language === 'RU' ? 'Все обзоры' : 'All Reviews'}
-                                            </NavLink>
+                                        <NavDropdown.Item className={style.dropdownItem} href="/reviews">
+                                            {language === 'RU' ? 'Все обзоры' : 'All Reviews'}
                                         </NavDropdown.Item>
                                     </NavDropdown>
-                                    : <NavLink to={'/reviews'}
-                                               className={style.headerLink}>
+                                    : <NavLink to={'/reviews'} className={style.headerLink}>
                                         {language === 'RU' ? 'Обзоры' : 'Reviews'}
                                     </NavLink>
                             }
-
                         </Navbar.Collapse>
                         <Form.Check
                             onChange={changeTheme}
@@ -79,28 +68,21 @@ export const AppNavbar: React.FC<NavbarPropsType> = (
                                     <NavDropdown title={language === 'RU' ? 'Опции' : 'Options'}
                                                  className={style.dropdown}>
                                         {user.role === 'ADMIN' &&
-                                            <NavDropdown.Item className={style.dropdownItem}>
-                                                <NavLink to={'/categories'}>
-                                                    {language === 'RU' ? 'Категории' : 'Categories'}
-                                                </NavLink>
+                                            <NavDropdown.Item className={style.dropdownItem} href="/categories">
+                                                {language === 'RU' ? 'Категории' : 'Categories'}
                                             </NavDropdown.Item>
                                         }
                                         {user.role === 'ADMIN' &&
-                                            <NavDropdown.Item className={style.dropdownItem}>
-                                                <NavLink to={'/users'}>
-                                                    {language === 'RU' ? 'Пользователи' : 'Users'}
-                                                </NavLink>
+                                            <NavDropdown.Item className={style.dropdownItem} href="/users">
+                                                {language === 'RU' ? 'Пользователи' : 'Users'}
                                             </NavDropdown.Item>
                                         }
-                                        <NavDropdown.Item className={style.dropdownItem}>
-                                            <NavLink to={'/setting'}>
-                                                {language === 'RU' ? 'Настройки' : 'Setting'}
-                                            </NavLink>
+                                        <NavDropdown.Item className={style.dropdownItem} href="/setting">
+                                            {language === 'RU' ? 'Настройки' : 'Setting'}
                                         </NavDropdown.Item>
                                         <NavDropdown.Divider/>
                                         <NavDropdown.Item className={`${style.dropdownItem} ${style.logout}`}
-                                                          onClick={logout}
-                                                          href="">
+                                                          onClick={logout}>
                                             {language === 'RU' ? 'Выйти' : 'Logout'}
                                         </NavDropdown.Item>
                                     </NavDropdown>

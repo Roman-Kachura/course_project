@@ -1,13 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {authApi, AuthResponseType, LoginValuesType, RegistrationValuesType} from '../../api/authApi';
+import {authApi, AuthResponseType, LoginValuesType} from '../../api/authApi';
 import {setAppStatus} from './appReducer';
 import {
+    createUserWithEmailAndPassword,
+    FacebookAuthProvider,
     getAuth,
     getRedirectResult,
-    createUserWithEmailAndPassword,
     GoogleAuthProvider,
-    signInWithPopup,
-    FacebookAuthProvider
+    signInWithRedirect
 } from 'firebase/auth';
 
 
@@ -34,33 +34,35 @@ export const registrationThunk = createAsyncThunk('registration', async (arg: { 
 });
 
 export const authWithGoogleThunk = createAsyncThunk('auth-with-google', async (arg, thunkAPI) => {
-    thunkAPI.dispatch(setAppStatus('loading'));
     try {
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
-        const result = await signInWithPopup(auth, provider);
-        const {displayName, email, photoURL, uid} = result.user;
-        if(displayName && email && photoURL){
-            const user = await authApi.social({displayName, email, photoURL, uid});
-            thunkAPI.dispatch(setState({isAuth: true, data: user.data}));
-        }
+        await signInWithRedirect(auth, provider);
     } catch (e) {
         throw e;
-    } finally {
-        thunkAPI.dispatch(setAppStatus('stop'));
     }
 });
 
 export const authWithFacebookThunk = createAsyncThunk('auth-with-facebook', async (arg, thunkAPI) => {
-    thunkAPI.dispatch(setAppStatus('loading'));
     try {
         const auth = getAuth();
         const provider = new FacebookAuthProvider();
-        const result = await signInWithPopup(auth, provider);
-        const {displayName, email, photoURL, uid} = result.user;
-        if(displayName && email && photoURL){
-            const user = await authApi.social({displayName, email, photoURL, uid});
-            thunkAPI.dispatch(setState({isAuth: true, data: user.data}));
+        await signInWithRedirect(auth, provider);
+    } catch (e) {
+        throw e;
+    }
+});
+export const getRedirectResultThunk = createAsyncThunk('get-redirect-result', async (arg, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatus('loading'));
+    try {
+        const auth = getAuth();
+        const result = await getRedirectResult(auth);
+        if (result) {
+            const {displayName, email, photoURL, uid} = result.user;
+            if (displayName && email && photoURL) {
+                const user = await authApi.social({displayName, email, photoURL, uid});
+                thunkAPI.dispatch(setState({isAuth: true, data: user.data}));
+            }
         }
     } catch (e) {
         throw e;
@@ -68,7 +70,6 @@ export const authWithFacebookThunk = createAsyncThunk('auth-with-facebook', asyn
         thunkAPI.dispatch(setAppStatus('stop'));
     }
 });
-
 export const loginThunk = createAsyncThunk('login', async (arg: LoginValuesType, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus('loading'));
     try {
@@ -114,3 +115,5 @@ type AuthInitialStateType = {
     isAuth: boolean
     data: AuthResponseType
 }
+
+

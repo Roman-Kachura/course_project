@@ -222,6 +222,7 @@
 
   .canvasBody {
     background: rgb(33, 37, 41);
+    padding: 0;
 
     &.light {
       background: #fff;
@@ -238,15 +239,31 @@
     }
 
     .reviewsLink {
+      display: block;
+      text-decoration: none;
       color: #0d6efd;
       text-transform: uppercase;
       padding: 10px 0;
+      transition: .3s;
+
+      &:hover,
+      &:focus{
+        text-decoration: underline;
+      }
     }
 
     .optionsLink {
+      display: block;
+      text-decoration: none;
       color: mediumpurple;
       text-transform: uppercase;
       padding: 10px 0;
+      transition: .3s;
+
+      &:hover,
+      &:focus{
+        text-decoration: underline;
+      }
 
       &.logout {
         color: red;

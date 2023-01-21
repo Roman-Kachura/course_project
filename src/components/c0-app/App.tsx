@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Header} from '../c1-header/Header';
 import {Container} from 'react-bootstrap';
 import style from './App.module.scss';
@@ -11,6 +11,8 @@ import {SearchPanel} from '../c2-main/m7-search/SearchPanel';
 import {SearchType} from '../../api/reviewApi';
 import {getReviewsThunk} from '../../store/reducers/reviewsReducer';
 import {NavLink} from 'react-router-dom';
+import {getRedirectResultThunk} from '../../store/reducers/authReducer';
+import {UserResponseType} from '../../api/authApi';
 
 
 export const App: React.FC = () => {
@@ -19,11 +21,14 @@ export const App: React.FC = () => {
     const dispatch = useAppDispatch();
     const link = useRef<HTMLAnchorElement>(null);
     const changeSearchValue = (search: SearchType) => {
-        if(link.current){
+        if (link.current) {
             dispatch(getReviewsThunk({currentPage: 1, search}));
             link.current.click();
         }
     }
+    useEffect(() => {
+        dispatch(getRedirectResultThunk());
+    }, [dispatch])
     return (
         <div className={isDarkTheme ? style.app : `${style.app} ${style.light}`}>
             <Header/>
