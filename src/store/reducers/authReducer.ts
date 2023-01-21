@@ -34,6 +34,7 @@ export const registrationThunk = createAsyncThunk('registration', async (arg: { 
 });
 
 export const authWithGoogleThunk = createAsyncThunk('auth-with-google', async (arg, thunkAPI) => {
+    console.log('google')
     try {
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
@@ -44,6 +45,7 @@ export const authWithGoogleThunk = createAsyncThunk('auth-with-google', async (a
 });
 
 export const authWithFacebookThunk = createAsyncThunk('auth-with-facebook', async (arg, thunkAPI) => {
+    console.log('face')
     try {
         const auth = getAuth();
         const provider = new FacebookAuthProvider();
@@ -53,6 +55,7 @@ export const authWithFacebookThunk = createAsyncThunk('auth-with-facebook', asyn
     }
 });
 export const getRedirectResultThunk = createAsyncThunk('get-redirect-result', async (arg, thunkAPI) => {
+    console.log('getRedirect')
     thunkAPI.dispatch(setAppStatus('loading'));
     try {
         const auth = getAuth();
