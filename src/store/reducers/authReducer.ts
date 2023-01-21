@@ -37,6 +37,7 @@ export const authWithGoogleThunk = createAsyncThunk('auth-with-google', async (a
     console.log('google')
     try {
         const auth = getAuth();
+        console.log(auth)
         const provider = new GoogleAuthProvider();
         await signInWithRedirect(auth, provider);
     } catch (e) {
@@ -48,6 +49,7 @@ export const authWithFacebookThunk = createAsyncThunk('auth-with-facebook', asyn
     console.log('face')
     try {
         const auth = getAuth();
+        console.log(auth)
         const provider = new FacebookAuthProvider();
         await signInWithRedirect(auth, provider);
     } catch (e) {
@@ -60,6 +62,7 @@ export const getRedirectResultThunk = createAsyncThunk('get-redirect-result', as
     try {
         const auth = getAuth();
         const result = await getRedirectResult(auth);
+        console.log(result)
         if (result) {
             const {displayName, email, photoURL, uid} = result.user;
             if (displayName && email && photoURL) {
