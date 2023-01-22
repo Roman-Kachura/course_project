@@ -132,12 +132,17 @@
       margin-bottom: 20px;
     }
 
+    .text {
+      color: #fff;
+    }
+
     .markdown {
-      .buttonsBlock{
+      .buttonsBlock {
         display: flex;
         justify-content: start;
         align-items: center;
         margin-bottom: 20px;
+
         .editBtn {
           display: flex;
           justify-content: center;
@@ -167,10 +172,12 @@
               }
             }
           }
+
           background: rgba(33, 37, 41);
-          div{
-            background: rgba(0,0,0,0);
-            color:#0d6efd;
+
+          div {
+            background: rgba(0, 0, 0, 0);
+            color: #0d6efd;
           }
         }
 
@@ -197,10 +204,14 @@
     }
 
     .description {
+      .text {
+        color: #000;
+      }
       .markdown {
         .text {
           color: #000;
         }
+
         .editor {
           & > div {
             ul {
@@ -210,10 +221,12 @@
                 }
               }
             }
+
             background: rgba(248, 249, 250, 1);
-            div{
-              background: rgba(0,0,0,0);
-              color:#0d6efd;
+
+            div {
+              background: rgba(0, 0, 0, 0);
+              color: #0d6efd;
             }
           }
 

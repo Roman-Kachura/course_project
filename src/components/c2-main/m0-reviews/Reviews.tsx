@@ -26,7 +26,10 @@ export const Reviews = React.memo(({isAuthor}: ReviewsType) => {
         currentPage,
         search: {...search, authorID: isAuthor ? user.id : ''}
     }));
-    const getMyReviews = () => dispatch(getReviewsThunk({currentPage: 1, search: {...search, authorID: user ? user.id : ''}}));
+    const getMyReviews = () => dispatch(getReviewsThunk({
+        currentPage: 1,
+        search: {...search, authorID: user ? user.id : ''}
+    }));
     const changePage = (currentPage: number) => dispatch(getReviewsThunk({
         currentPage,
         search: {...search, authorID: isAuthor ? user.id : ''}
@@ -45,7 +48,7 @@ export const Reviews = React.memo(({isAuthor}: ReviewsType) => {
         dispatch(setIsResetThunk());
         dispatch(setAppStatus('stop'));
         getReviewsForEffect();
-    }, [dispatch]);
+    }, [dispatch, isAuthor]);
 
     return (
         <div className={style.reviews}>

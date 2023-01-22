@@ -31,9 +31,6 @@ const Setting = () => {
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setError('');
         setValue(e.currentTarget.value);
-        if ((/^[\w]+$/gi).test(e.currentTarget.value)) {
-
-        }
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -54,15 +51,16 @@ const Setting = () => {
     }
 
     const changeSetting = () => {
+        const newValue = value.trim();
         if (value.length < 3 || value.length > 20) {
             return setError('Name must contain 3 to 20 letters!');
         } else {
-            if (!(/^[a-zA-Z]+$/gi).test(value)) return setError('Name can only contain letters A-Z!');
+            if (!(/^[a-zA-Z]+[\s]{0,1}[a-zA-Z]+$/gi).test(newValue)) return setError('Name can only contain letters A-Z!');
             const form = new FormData();
             if (file) {
                 form.append('file', file);
             }
-            form.append('name', value);
+            form.append('name', newValue);
             form.append('id', id);
             dispatch(changeUserData({form}));
         }

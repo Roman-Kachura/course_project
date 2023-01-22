@@ -16,8 +16,6 @@ export const AppNavbar: React.FC<NavbarPropsType> = (
         changeLanguage
     }
 ) => {
-    const location = useLocation();
-    console.log(location)
     return (
         <>
             <Navbar fixed={'top'} bg={isDarkTheme ? 'dark' : 'light'} variant={isDarkTheme ? 'dark' : 'light'}
