@@ -5,8 +5,10 @@ import style from './Categories.module.scss';
 import {Button, Form, Table} from 'react-bootstrap';
 import {createCategoryThunk, getCategoriesThunk} from '../../../store/reducers/categoriesReducer';
 import {LangType} from '../../../store/reducers/appReducer';
+import {Navigate} from 'react-router-dom';
 
 export const Categories: React.FC = () => {
+    const isAuth = useSelector<RootState, boolean>(state => state.authReducer.isAuth);
     const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
     const categories = useSelector<RootState, string[]>(state => state.categoriesReducer.categories);
@@ -28,7 +30,8 @@ export const Categories: React.FC = () => {
 
     useEffect(() => {
         dispatch(getCategoriesThunk());
-    }, [dispatch])
+    }, [dispatch]);
+    if (!isAuth) return <Navigate to={'/reviews'}/>
     return (
         <div className={isDarkTheme ? style.categories : `${style.categories} ${style.light}`}>
             <Table className={style.table} striped bordered hover variant={isDarkTheme ? 'dark' : 'light'}>
