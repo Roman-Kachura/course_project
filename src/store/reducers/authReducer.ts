@@ -9,6 +9,7 @@ import {
     GoogleAuthProvider,
     signInWithRedirect
 } from 'firebase/auth';
+import {getIframe} from '../../api/appIframe';
 
 
 const authInitialState: AuthInitialStateType = {
@@ -34,10 +35,8 @@ export const registrationThunk = createAsyncThunk('registration', async (arg: { 
 });
 
 export const authWithGoogleThunk = createAsyncThunk('auth-with-google', async (arg, thunkAPI) => {
-    console.log('google')
     try {
         const auth = getAuth();
-        console.log(auth)
         const provider = new GoogleAuthProvider();
         await signInWithRedirect(auth, provider);
     } catch (e) {
@@ -46,10 +45,8 @@ export const authWithGoogleThunk = createAsyncThunk('auth-with-google', async (a
 });
 
 export const authWithFacebookThunk = createAsyncThunk('auth-with-facebook', async (arg, thunkAPI) => {
-    console.log('face')
     try {
         const auth = getAuth();
-        console.log(auth)
         const provider = new FacebookAuthProvider();
         await signInWithRedirect(auth, provider);
     } catch (e) {
@@ -57,12 +54,11 @@ export const authWithFacebookThunk = createAsyncThunk('auth-with-facebook', asyn
     }
 });
 export const getRedirectResultThunk = createAsyncThunk('get-redirect-result', async (arg, thunkAPI) => {
-    console.log('getRedirect')
     thunkAPI.dispatch(setAppStatus('loading'));
     try {
         const auth = getAuth();
         const result = await getRedirectResult(auth);
-        console.log(result)
+        getIframe();
         if (result) {
             const {displayName, email, photoURL, uid} = result.user;
             if (displayName && email && photoURL) {

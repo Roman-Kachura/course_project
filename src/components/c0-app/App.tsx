@@ -28,7 +28,7 @@ export const App: React.FC = () => {
     }
     useEffect(() => {
         dispatch(getRedirectResultThunk());
-    }, [dispatch])
+    }, [])
     return (
         <div className={isDarkTheme ? style.app : `${style.app} ${style.light}`}>
             <Header/>

@@ -8,11 +8,9 @@ import style from './Auth.module.scss';
 export const SocialBar: React.FC = () => {
     const dispatch = useAppDispatch();
     const authWithGoogle = () => {
-        console.log('google in component')
         dispatch(authWithGoogleThunk())
     };
     const authWithFacebook = () => {
-        console.log('facebook in component')
         dispatch(authWithFacebookThunk())
     };
     return (
