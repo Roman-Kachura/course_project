@@ -10,7 +10,6 @@ import {getOneUserThunk, getRatedReviewsThunk} from '../../../store/reducers/pro
 import {getReviewsThunk} from '../../../store/reducers/reviewsReducer';
 import {UserReviewsTable} from './UserReviewsTable';
 import {UserRatedReviewsTable} from './UserRatedReviewsTable';
-import {LangType} from '../../../store/reducers/appReducer';
 
 export const Profile = () => {
     const id = useParams().id;
@@ -18,7 +17,6 @@ export const Profile = () => {
     const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
     const profile = useSelector<RootState, UserResponseType>(state => state.profileReducer.user);
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
-    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     const getUserReviews = (currentPage: number, sort: string, category: string) =>
         profile && dispatch(getReviewsThunk({
             currentPage,
@@ -34,7 +32,7 @@ export const Profile = () => {
     useEffect(() => {
         id && dispatch(getOneUserThunk({id}));
         id && dispatch(getRatedReviewsThunk({id, currentPage: 1, category: '', sort: 'DATE UP'}));
-    }, [id]);
+    }, [dispatch, id]);
 
     if (!!profile) return (
         <div className={isDarkTheme ? style.userItem : `${style.userItem} ${style.light}`}>
@@ -49,10 +47,9 @@ export const Profile = () => {
                 }
                 {profile && <h4 className={style.name}>{profile.name}</h4>}
             </div>
-            <UserReviewsTable isDarkTheme={isDarkTheme} getUserReviews={getUserReviews} profile={profile} user={user}
-                              language={language}/>
+            <UserReviewsTable isDarkTheme={isDarkTheme} getUserReviews={getUserReviews} profile={profile} user={user}/>
             <UserRatedReviewsTable isDarkTheme={isDarkTheme} profile={profile}
-                                   getUserRatedReviews={getUserRatedReviews} language={language}/>
+                                   getUserRatedReviews={getUserRatedReviews}/>
         </div>
     )
     return <Loader/>

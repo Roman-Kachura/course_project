@@ -6,8 +6,12 @@ import {logoutThunk} from '../../store/reducers/authReducer';
 import {LangType, setAppTheme, setLanguage} from '../../store/reducers/appReducer';
 import {AppNavbar} from './AppNavbar';
 import {AppMobileNavbar} from './AppMobileNavbar';
+import {useLang, useSetLang, useT} from '../../i18n';
 
 export const Header: React.FC = () => {
+    const t = useT();
+    const setLang = useSetLang();
+    const lang = useLang();
     const [isMobileMenu, setIsMobileMenu] = useState(false);
     const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
@@ -24,6 +28,7 @@ export const Header: React.FC = () => {
     }
 
     const changeLanguage = (e: ChangeEvent<HTMLSelectElement>) => {
+        setLang(e.currentTarget.value as 'ru' | 'en');
         dispatch(setLanguage(e.currentTarget.value));
     }
 

@@ -7,13 +7,14 @@ import {Button} from 'react-bootstrap';
 import {deleteCommentThunk} from '../../../store/reducers/commentsReducer';
 import {useSelector} from 'react-redux';
 import {LangType} from '../../../store/reducers/appReducer';
+import {useT} from '../../../i18n';
 
 export const Comment: React.FC<CommentType & { userID?: string }> = (
     {id, text, created, authorID, reviewID, userID, author}
 ) => {
+    const t = useT();
     const dispatch = useAppDispatch();
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
-    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
 
     const onClickHandler = () => {
         dispatch(deleteCommentThunk({id, authorID}));
@@ -30,7 +31,7 @@ export const Comment: React.FC<CommentType & { userID?: string }> = (
             </div>
             {userID === authorID &&
                 <Button className={style.btn} variant="outline-danger" onClick={onClickHandler}>
-                    {language === 'RU' ? 'Удалить' : 'Delete'}
+                    {t('DELETE_TEXT')}
                 </Button>}
         </div>
     )

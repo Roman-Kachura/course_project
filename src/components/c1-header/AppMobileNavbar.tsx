@@ -1,18 +1,10 @@
 import React, {ChangeEvent, MouseEvent, useState} from 'react';
 import style from './Header.module.scss';
-import {
-    Accordion,
-    Button,
-    CloseButton,
-    Container,
-    Form,
-    Navbar,
-    NavDropdown,
-    Offcanvas
-} from 'react-bootstrap';
+import {Accordion, Button, CloseButton, Container, Form, Navbar, NavDropdown, Offcanvas} from 'react-bootstrap';
 import {UserResponseType} from '../../api/authApi';
 import {LangType} from '../../store/reducers/appReducer';
 import {NavLink} from 'react-router-dom';
+import {useT} from '../../i18n';
 
 export const AppMobileNavbar: React.FC<AppMobileNavbarPropsType> = (
     {
@@ -25,8 +17,8 @@ export const AppMobileNavbar: React.FC<AppMobileNavbarPropsType> = (
         changeLanguage
     }
 ) => {
+    const t = useT();
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     return (
@@ -35,7 +27,7 @@ export const AppMobileNavbar: React.FC<AppMobileNavbarPropsType> = (
             <Container className={style.container}>
                 <div/>
                 <Button variant={'outline-secondary'} onClick={handleShow}>
-                    {language === 'RU' ? 'МЕНЮ' : 'MENU'}
+                    {t('MENU')}
                 </Button>
             </Container>
             <Offcanvas show={show} onHide={handleClose}>
@@ -60,59 +52,59 @@ export const AppMobileNavbar: React.FC<AppMobileNavbarPropsType> = (
                     <Form.Check
                         onChange={changeTheme}
                         type="switch"
-                        label={language === 'RU' ? 'ТЕМНАЯ ТЕМА' : 'DARK THEME'}
+                        label={t('THEME')}
                         className={style.theme}
                         checked={isDarkTheme}
                     />
                     <Form.Select className={style.lang} value={language} onChange={changeLanguage}>
-                        <option value="RU">RU</option>
-                        <option value="EN">EN</option>
+                        <option value="ru">RU</option>
+                        <option value="en">EN</option>
                     </Form.Select>
                     {
                         isAuth
                             ? <Accordion className={style.accordion}>
                                 <Accordion.Item eventKey="0">
-                                    <Accordion.Header>{language === 'RU' ? 'ОБЗОРЫ' : 'REVIEWS'}</Accordion.Header>
+                                    <Accordion.Header>{t('REVIEWS')}</Accordion.Header>
                                     <Accordion.Body>
                                         <NavLink className={style.reviewsLink} to="/create-review">
-                                            {language === 'RU' ? 'Создать обзор' : 'Create review'}
+                                            {t('CREATE_REVIEW')}
                                         </NavLink>
                                         <NavLink className={style.reviewsLink} to="/my-reviews">
-                                            {language === 'RU' ? 'Мои обзоры' : 'My reviews'}
+                                            {t('MY_REVIEWS')}
                                         </NavLink>
                                         <NavLink className={style.reviewsLink} to="/reviews">
-                                            {language === 'RU' ? 'Все обзоры' : 'All Reviews'}
+                                            {t('ALL_REVIEWS')}
                                         </NavLink>
                                     </Accordion.Body>
                                 </Accordion.Item>
                                 <Accordion.Item eventKey="1">
-                                    <Accordion.Header>{language === 'RU' ? 'ОПЦИИ' : 'OPTION'}</Accordion.Header>
+                                    <Accordion.Header>{t('CATEGORIES')}</Accordion.Header>
                                     <Accordion.Body>
                                         {user.role === 'ADMIN' &&
                                             <NavLink className={style.optionsLink} to="/categories">
-                                                {language === 'RU' ? 'Категории' : 'Categories'}
+                                                {t('CATEGORIES')}
                                             </NavLink>
                                         }
                                         {user.role === 'ADMIN' &&
                                             <NavLink className={style.optionsLink} to="/users">
-                                                {language === 'RU' ? 'Пользователи' : 'Users'}
+                                                {t('USERS')}
                                             </NavLink>
                                         }
                                         <NavLink className={style.optionsLink} to="/setting">
-                                            {language === 'RU' ? 'Настройки' : 'Setting'}
+                                            {t('SETTING')}
                                         </NavLink>
                                         <NavDropdown.Item className={`${style.optionsLink} ${style.logout}`}
                                                           onClick={logout}
                                                           href="">
-                                            {language === 'RU' ? 'Выйти' : 'Logout'}
+                                            {t('LOGOUT')}
                                         </NavDropdown.Item>
                                     </Accordion.Body>
                                 </Accordion.Item>
                             </Accordion>
                             : <div>
-                                <NavLink className={style.reviewsLink} to="/reviews">{language === 'RU' ? 'Обзоры' : 'Reviews'}</NavLink>
+                                <NavLink className={style.reviewsLink} to="/reviews">{t('REVIEWS')}</NavLink>
                                 <NavLink to="/login" className={style.loginLink}>
-                                    {language === 'RU' ? 'Войти' : 'Login'}
+                                    {t('LOGIN')}
                                 </NavLink>
                             </div>
                     }

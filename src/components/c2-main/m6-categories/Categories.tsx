@@ -4,12 +4,12 @@ import {RootState, useAppDispatch} from '../../../store/store';
 import style from './Categories.module.scss';
 import {Button, Form, Table} from 'react-bootstrap';
 import {createCategoryThunk, getCategoriesThunk} from '../../../store/reducers/categoriesReducer';
-import {LangType} from '../../../store/reducers/appReducer';
 import {Navigate} from 'react-router-dom';
+import {useT} from '../../../i18n';
 
 export const Categories: React.FC = () => {
+    const t = useT();
     const isAuth = useSelector<RootState, boolean>(state => state.authReducer.isAuth);
-    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
     const categories = useSelector<RootState, string[]>(state => state.categoriesReducer.categories);
     const dispatch = useAppDispatch();
@@ -24,7 +24,7 @@ export const Categories: React.FC = () => {
         if ((/^[a-zA-Z]+$/gi).test(value)) {
             dispatch(createCategoryThunk({category: value}));
         } else {
-            setError('Category name can contain characters from A to Z')
+            setError(t('CATEGORY_ERROR'))
         }
     }
 
@@ -38,7 +38,7 @@ export const Categories: React.FC = () => {
                 <thead>
                 <tr>
                     <th>
-                        {language === 'RU' ? 'КАТЕГОРИИ' : 'CATEGORIES'}
+                        {t('ALL_CATEGORIES')}
                     </th>
                 </tr>
                 </thead>
@@ -50,13 +50,13 @@ export const Categories: React.FC = () => {
             </Table>
             <div className={style.addBlock}>
                 <Form.Control
-                    placeholder={language === 'RU' ? 'Новая категория' : 'New category'}
+                    placeholder={t('NEW_CATEGORY')}
                     type="text" className={!error ? `${style.input}` : `${style.input} ${style.error}`}
                     value={value} onChange={changeValue}
                 />
                 {error && <div className={style.errorText}>{error}</div>}
                 <Button onClick={onClickHandler}>
-                    {language === 'RU' ? 'ДОБАВИТЬ КАТЕГОРИЮ' : 'ADD CATEGORY'}
+                    {t('ADD_CATEGORY')}
                 </Button>
             </div>
         </div>

@@ -7,6 +7,7 @@ import {Navigate} from 'react-router-dom';
 import {Button, Form} from 'react-bootstrap';
 import {changeUserData} from '../../../store/reducers/usersReducer';
 import {LangType} from '../../../store/reducers/appReducer';
+import {useT} from '../../../i18n';
 
 export const SettingContainer = React.memo(() => {
     const isAuth = useSelector<RootState, boolean>(state => state.authReducer.isAuth);
@@ -15,7 +16,7 @@ export const SettingContainer = React.memo(() => {
 })
 
 const Setting = () => {
-    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
+    const t = useT();
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
     const fileRef = useRef<any>(null);
     const {name, photo, id} = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
@@ -53,9 +54,9 @@ const Setting = () => {
     const changeSetting = () => {
         const newValue = value.trim();
         if (value.length < 3 || value.length > 20) {
-            return setError('Name must contain 3 to 20 letters!');
+            return setError(t('NAME_ERROR_LENGTH'));
         } else {
-            if (!(/^[a-zA-Z]+[\s]{0,1}[a-zA-Z]+$/gi).test(newValue)) return setError('Name can only contain letters A-Z!');
+            if (!(/^[a-zA-Zа-яА-Я]+[\s]{0,1}[a-zA-Zа-яА-Я]+$/gi).test(newValue)) return setError(t('NAME_ERROR_CHARACTERS'));
             const form = new FormData();
             if (file) {
                 form.append('file', file);
@@ -85,7 +86,7 @@ const Setting = () => {
                 <div className={style.text}>
                     <Form.Control
                         type="text"
-                        placeholder={language === 'RU' ? 'Новое имя' : 'New name'}
+                        placeholder={t('NEW_NAME')}
                         value={value}
                         onChange={onChangeHandler}
                         onKeyDown={onKeyPressHandler}
@@ -93,7 +94,7 @@ const Setting = () => {
                     />
                     {error && <div className={style.error}>{error}</div>}
                     <Button className={style.btn} onClick={changeSetting}>
-                        {language === 'RU' ? 'ИЗМЕНИТЬ' : 'CHANGE'}
+                        {t('CHANGE_TEXT')}
                     </Button>
                 </div>
             </div>

@@ -3,8 +3,10 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import style from '../Reviews.module.scss';
 import {Button} from 'react-bootstrap';
 import {CheckLg, Pencil} from 'react-bootstrap-icons';
+import {useT} from '../../../../i18n';
 
 export const ItemText: React.FC<ItemTextPropsType> = ({text, callback}) => {
+    const t = useT();
     const [value, setValue] = useState(text);
     const [isEdit, setIsEdit] = useState(false);
     const onChangeValue = (value?: string | undefined, event?: ChangeEvent<HTMLTextAreaElement> | undefined, state?: ContextStore | undefined) => {
@@ -29,11 +31,11 @@ export const ItemText: React.FC<ItemTextPropsType> = ({text, callback}) => {
     return (
         <div className={style.markdown}>
             <div className={style.buttonsBlock}>
-                <Button className={style.editBtn} variant="outline-success" title="Edit" onClick={onChangeEditMode}>
+                <Button className={style.editBtn} variant="outline-success" title={t('EDIT_TEXT')} onClick={onChangeEditMode}>
                     <Pencil/>
                 </Button>
                 {isEdit &&
-                    <Button className={style.editBtn} variant="outline-primary" title="Save"
+                    <Button className={style.editBtn} variant="outline-primary" title={t('SAVE_TEXT')}
                             onClick={onSaveDescription}>
                         <CheckLg/>
                     </Button>

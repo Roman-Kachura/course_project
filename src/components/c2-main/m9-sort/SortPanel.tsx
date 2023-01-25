@@ -3,10 +3,10 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../store/store';
 import style from './SortPanel.module.scss';
 import {Button, Form} from 'react-bootstrap';
-import {LangType} from '../../../store/reducers/appReducer';
+import {useT} from '../../../i18n';
 
 export const SortPanel: React.FC<SortPanelPropsType> = ({sort, callBack, search}) => {
-    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
+    const t = useT();
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
     const categories = useSelector<RootState, string[]>(state => state.categoriesReducer.categories);
     const [category, setCategory] = useState(search.category);
@@ -23,7 +23,7 @@ export const SortPanel: React.FC<SortPanelPropsType> = ({sort, callBack, search}
         <Form className={isDarkTheme ? style.sortPanel : `${style.sortPanel} ${style.light}`}>
             <Form.Select value={category} className={style.select} onChange={changeCategory}>
                 <option value="">
-                    {language === 'RU' ? 'ВСЕ КАТЕГОРИИ' : 'ALL CATEGORIES'}
+                    {t('ALL_CATEGORIES')}
 
                 </option>
                 {

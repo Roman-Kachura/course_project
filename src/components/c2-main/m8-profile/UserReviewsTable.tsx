@@ -11,12 +11,13 @@ import {deleteItemThunk} from '../../../store/reducers/showReviewReducer';
 import {Rating} from '@mui/material';
 import {UserResponseType} from '../../../api/authApi';
 import {ReviewType} from '../../../api/reviewApi';
-import {LangType} from '../../../store/reducers/appReducer';
 import {NavLink} from 'react-router-dom';
+import {useT} from '../../../i18n';
 
 export const UserReviewsTable: React.FC<UserReviewsTablePropsType> = (
-    {isDarkTheme, getUserReviews, profile, user, language}
+    {isDarkTheme, getUserReviews, profile, user}
 ) => {
+    const t = useT();
     const {
         reviews,
         sort,
@@ -28,20 +29,18 @@ export const UserReviewsTable: React.FC<UserReviewsTablePropsType> = (
     const sortUserReviews = (category: string, sort: string) => getUserReviews(currentPage, sort, category);
     useEffect(() => {
         getUserReviews(1, sort[0], '');
-    }, [profile.id, sort.length])
+    }, [profile.id, sort.length, getUserReviews, sort])
+    if(reviews.length === 0) return <></>
     return (
         <div className={style.tableContainer}>
             <div className={style.wrapper}>
-                <h4 className={style.title}>
-                    {language === 'EN' && `${profile.name} reviews`}
-                    {language === 'RU' && `Обзоры ${profile.name}`}
-                </h4>
+                <h4 className={style.title}>{t('REVIEWS')}</h4>
                 <SortPanel sort={sort} callBack={sortUserReviews} search={search}/>
                 <Table striped variant={isDarkTheme ? 'dark' : 'light'} className={style.table}>
                     <tbody>
                     {
                         reviews.map(
-                            r => <UserReviewsTableRow language={language} user={user} r={r} key={r.id}/>
+                            r => <UserReviewsTableRow user={user} r={r} key={r.id}/>
                         )
                     }
                     </tbody>
@@ -53,7 +52,8 @@ export const UserReviewsTable: React.FC<UserReviewsTablePropsType> = (
     )
 }
 
-const UserReviewsTableRow: React.FC<UserReviewTableRowPropsType> = ({r, user, language}) => {
+const UserReviewsTableRow: React.FC<UserReviewTableRowPropsType> = ({r, user}) => {
+    const t = useT();
     const link = useRef<HTMLAnchorElement>(null);
     const dispatch = useAppDispatch();
     const deleteItem = (id: string, authorID: string) => {
@@ -64,7 +64,7 @@ const UserReviewsTableRow: React.FC<UserReviewTableRowPropsType> = ({r, user, la
     }
     return (
         <tr key={r.id}>
-            <td><img src={r.image} className={style.image}/></td>
+            <td><img alt="" src={r.image} className={style.image}/></td>
             <td><NavLink to={`/reviews/${r.id}`}>{r.name}</NavLink></td>
             <td><Rating max={5} value={r.rating} readOnly={true}/></td>
             <td>
@@ -73,11 +73,11 @@ const UserReviewsTableRow: React.FC<UserReviewTableRowPropsType> = ({r, user, la
                     <div className={style.btnBlock}>
                         <Button className={style.btn} variant="success"
                                 onClick={getToEditMode}>
-                            {language === 'RU' ? 'Изменить' : 'Edit'}
+                            {t('EDIT_TEXT')}
                         </Button>
                         <Button className={style.btn} variant="danger"
                                 onClick={() => deleteItem(r.id, r.authorID)}>
-                            {language === 'RU' ? 'Удалить' : 'Delete'}
+                            {t('DELETE_TEXT')}
                         </Button>
                     </div>
                 }
@@ -85,11 +85,11 @@ const UserReviewsTableRow: React.FC<UserReviewTableRowPropsType> = ({r, user, la
                     user && user.id !== r.authorID && user.role === 'ADMIN' &&
                     <div className={style.btnBlock}>
                         <Button className={style.btn} variant="outline-success" onClick={getToEditMode}>
-                            {language === 'RU' ? 'Изменить' : 'Edit'}
+                            {t('EDIT_TEXT')}
                         </Button>
                         <Button className={style.btn} variant="outline-danger"
                                 onClick={() => deleteItem(r.id, r.authorID)}>
-                            {language === 'RU' ? 'Удалить' : 'Delete'}
+                            {t('DELETE_TEXT')}
                         </Button>
                     </div>
                 }
@@ -100,7 +100,6 @@ const UserReviewsTableRow: React.FC<UserReviewTableRowPropsType> = ({r, user, la
 }
 
 type UserReviewsTablePropsType = {
-    language: LangType
     isDarkTheme: boolean
     getUserReviews: (currentPage: number, sort: string, category: string) => void
     profile: UserResponseType
@@ -109,5 +108,4 @@ type UserReviewsTablePropsType = {
 type UserReviewTableRowPropsType = {
     r: ReviewType
     user: UserResponseType
-    language: LangType
 }

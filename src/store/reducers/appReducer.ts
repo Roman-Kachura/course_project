@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 const AppReducerInitialState: AppReducerInitialStateType = {
     status: 'stop',
     isDarkTheme: false,
-    language: 'EN'
+    language: 'en'
 }
 
 const appSlice = createSlice({
@@ -34,4 +34,4 @@ export type AppReducerInitialStateType = {
 };
 
 export type AppStatusType = 'loading' | 'stop';
-export type LangType = 'RU' | 'EN';
+export type LangType = 'ru' | 'en';

@@ -10,8 +10,10 @@ import {Navigate} from 'react-router-dom';
 import {setIsResetThunk} from '../../../../store/reducers/showReviewReducer';
 import {Rating} from '@mui/material';
 import {LangType} from '../../../../store/reducers/appReducer';
+import {useT} from '../../../../i18n';
 
 export const CreateReview = React.memo(() => {
+    const t = useT();
     const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     const user = useSelector<RootState, UserResponseType>(state => state.authReducer.data.user);
     const isAuth = useSelector<RootState, boolean>(state => state.authReducer.isAuth);
@@ -78,7 +80,7 @@ export const CreateReview = React.memo(() => {
                 {
                     !image
                         ? <div className={!fileError ? style.drag : `${style.drag} ${style.error}`} onClick={pickFile}>
-                            {language === 'RU' ? 'ВЫБЕРИТЕ ФАЙЛ' : 'SELECT FILE'}
+                            {t('SELECT_FILE')}
                         </div>
                         : <Figure.Image
                             className={style.image}
@@ -95,7 +97,7 @@ export const CreateReview = React.memo(() => {
                     ref={fileRef}
                 />
                 <div className={style.rating}>
-                    <div className={style.label}>{language === 'RU' ? 'Ваша оценка' : 'Your rating:'}</div>
+                    <div className={style.label}>{t('YOUR_RATING')}</div>
                     <Rating value={rating} max={10} onChange={(event, value) => value && setRating(value)}/>
                 </div>
                 {fileError && <div className={style.fileError}>{fileError}</div>}

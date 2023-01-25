@@ -1,9 +1,10 @@
 import React, {ChangeEvent, MouseEvent} from 'react';
 import style from './Header.module.scss';
-import {NavLink, useLocation} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import {UserResponseType} from '../../api/authApi';
 import {Container, Form, Nav, Navbar, NavDropdown} from 'react-bootstrap';
 import {LangType} from '../../store/reducers/appReducer';
+import {useT} from '../../i18n';
 
 export const AppNavbar: React.FC<NavbarPropsType> = (
     {
@@ -16,6 +17,7 @@ export const AppNavbar: React.FC<NavbarPropsType> = (
         changeLanguage
     }
 ) => {
+    const t = useT();
     return (
         <>
             <Navbar fixed={'top'} bg={isDarkTheme ? 'dark' : 'light'} variant={isDarkTheme ? 'dark' : 'light'}
@@ -33,63 +35,63 @@ export const AppNavbar: React.FC<NavbarPropsType> = (
                         <Navbar.Collapse className={style.collapse}>
                             {
                                 isAuth
-                                    ? <NavDropdown title={language === 'RU' ? 'Обзоры' : 'Reviews'} className={style.dropdown}>
+                                    ? <NavDropdown title={t('REVIEWS')} className={style.dropdown}>
                                         <NavLink className={style.dropdownItem} to="/create-review">
-                                            {language === 'RU' ? 'Создать обзор' : 'Create review'}
+                                            {t('CREATE_REVIEW')}
                                         </NavLink>
                                         <NavLink className={style.dropdownItem} to="/my-reviews">
-                                            {language === 'RU' ? 'Мои обзоры' : 'My reviews'}
+                                            {t('MY_REVIEWS')}
                                         </NavLink>
                                         <NavLink className={style.dropdownItem} to="/reviews">
-                                            {language === 'RU' ? 'Все обзоры' : 'All Reviews'}
+                                            {t('ALL_REVIEWS')}
                                         </NavLink>
                                     </NavDropdown>
                                     : <NavLink to={'/reviews'} className={style.headerLink}>
-                                        {language === 'RU' ? 'Обзоры' : 'Reviews'}
+                                        {t('REVIEWS')}
                                     </NavLink>
                             }
                         </Navbar.Collapse>
                         <Form.Check
                             onChange={changeTheme}
                             type="switch"
-                            label={language === 'RU' ? 'ТЕМНАЯ ТЕМА' : 'DARK THEME'}
+                            label={t('THEME')}
                             className={style.theme}
                             checked={isDarkTheme}
                         />
                     </div>
                     <Navbar className={style.navbar}>
                         <Form.Select className={style.lang} value={language} onChange={changeLanguage}>
-                            <option value="RU">RU</option>
-                            <option value="EN">EN</option>
+                            <option value="ru">RU</option>
+                            <option value="en">EN</option>
                         </Form.Select>
                         {user
                             ? <Navbar.Collapse className={style.collapse}>
                                 <Nav className={style.nav}>
-                                    <NavDropdown title={language === 'RU' ? 'Опции' : 'Options'}
+                                    <NavDropdown title={t('OPTION')}
                                                  className={style.dropdown}>
                                         {user.role === 'ADMIN' &&
                                             <NavLink className={style.dropdownItem} to="/categories">
-                                                {language === 'RU' ? 'Категории' : 'Categories'}
+                                                {t('CATEGORIES')}
                                             </NavLink>
                                         }
                                         {user.role === 'ADMIN' &&
                                             <NavLink className={style.dropdownItem} to="/users">
-                                                {language === 'RU' ? 'Пользователи' : 'Users'}
+                                                {t('USERS')}
                                             </NavLink>
                                         }
                                         <NavLink className={style.dropdownItem} to="/setting">
-                                            {language === 'RU' ? 'Настройки' : 'Setting'}
+                                            {t('SETTING')}
                                         </NavLink>
                                         <NavDropdown.Divider/>
                                         <NavDropdown.Item className={`${style.dropdownItem} ${style.logout}`}
                                                           onClick={logout}>
-                                            {language === 'RU' ? 'Выйти' : 'Logout'}
+                                            {t('LOGOUT')}
                                         </NavDropdown.Item>
                                     </NavDropdown>
                                 </Nav>
                             </Navbar.Collapse>
                             : <NavLink to="/login" className={style.loginLink}>
-                                {language === 'RU' ? 'Войти' : 'Login'}
+                                {t('LOGIN')}
                             </NavLink>
                         }
                     </Navbar>

@@ -5,8 +5,10 @@ import {Formik} from 'formik';
 import {Button, Form} from 'react-bootstrap';
 import style from './Create.module.scss';
 import {LangType} from '../../../../store/reducers/appReducer';
+import {useT} from '../../../../i18n';
 
 export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack, values}) => {
+    const t = useT();
     const categories = useSelector<RootState, string[]>(state => state.categoriesReducer.categories);
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
     const language = useSelector<RootState, LangType>(state => state.appReducer.language);
@@ -22,20 +24,20 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
             validate={values => {
                 const errors = {name: '', product: '', description: '', hashtags: ''};
                 if (values.name.length === 0 || values.name.length > 100) {
-                    errors.name = 'Title length must be greater than 0 and less than 100!'
+                    errors.name = t('CREATE_REVIEW_TITLE_ERROR');
                 }
 
                 if (values.product.length === 0 || values.product.length > 100) {
-                    errors.product = 'Product length must be greater than 0 and less than 100!'
+                    errors.product = t('CREATE_REVIEW_PRODUCT_ERROR')
                 }
 
                 if (values.description.length === 0 || values.description.length > 5000) {
-                    errors.description = 'Description length must be greater than 0 and less than 5000!'
+                    errors.description = t('CREATE_REVIEW_DESCRIPTION_ERROR')
                 }
 
                 if (values.hashtags.length > 1) {
                     values.hashtags.trim().split(' ').forEach(h => {
-                        if (!(/^#[\w]{1,}$/gi).test(h)) errors.hashtags = 'Hashtag must start with # and has minimum 1 character';
+                        if (!(/^#[\w]{1,}$/gi).test(h)) errors.hashtags = t('CREATE_REVIEW_HASHTAG_ERROR');
                     })
                 }
 
@@ -71,12 +73,12 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                     <div className={style.groupOne}>
                         <Form.Group className={style.group}>
                             <Form.Label className={!!errors.name && touched.name ? style.errorText : style.label}>
-                                {language === 'RU' ? 'Заголовок для вашего обзора' : 'Title for your review:'}
+                                {t('TITLE_YOUR_REVIEW')}
                             </Form.Label>
                             <Form.Control
                                 type="text"
                                 name="name"
-                                placeholder={language === 'RU' ? 'Максимум 100 знаков:' : "Max 100 characters"}
+                                placeholder={t('MAX_100')}
                                 value={values.name}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
@@ -88,12 +90,12 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                         <Form.Group className={style.group}>
                             <Form.Label
                                 className={!!errors.product && touched.product ? style.errorText : style.label}>
-                                {language === 'RU' ? 'Название продука' : 'Product name:'}
+                                {t('PRODUCT_YOUR_REVIEW')}
                             </Form.Label>
                             <Form.Control
                                 type="text"
                                 name="product"
-                                placeholder={language === 'RU' ? 'Максимум 100 знаков:' : "Max 100 characters"}
+                                placeholder={t('MAX_100')}
                                 value={values.product}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
@@ -107,7 +109,7 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                     <div className={style.groupTwo}>
                         <Form.Group className={style.group}>
                             <Form.Label className={style.label}>
-                                {language === 'RU' ? 'Выберите категорию:' : 'Choose category:'}
+                                {t('CATEGORY_YOUR_REVIEW')}
                             </Form.Label>
                             <Form.Select name="category" value={values.category} onChange={handleChange}>
                                 {categories.map((c, i) => <option key={i} value={c}>{c}</option>)}
@@ -116,7 +118,7 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                         <Form.Group className={style.group}>
                             <Form.Label
                                 className={!!errors.hashtags && touched.hashtags ? style.errorText : style.label}>
-                                {language === 'RU' ? 'Тэги:' : 'Hashtags:'}
+                                {t('HASHTAGS_YOUR_REVIEW')}
                             </Form.Label>
                             <Form.Control
                                 as="textarea"
@@ -124,7 +126,7 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                                 name="hashtags"
                                 value={values.hashtags}
                                 className={!!errors.hashtags && touched.hashtags ? style.errorInput : ''}
-                                placeholder={language === 'RU' ? '#Тэги:' : '#Hashtags'}
+                                placeholder={`#${t('HASHTAGS_YOUR_REVIEW')}`}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 style={{resize: 'none'}}
@@ -136,17 +138,14 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                     <Form.Group className={style.description}>
                         <Form.Label
                             className={!!errors.description && touched.description ? style.errorText : style.label}>
-                            {language === 'RU' ? 'Описание:' : 'Description:'}
+                            {t('DESCRIPTION_YOUR_REVIEW')}
                         </Form.Label>
                         <Form.Control
                             as="textarea"
                             rows={8}
                             className={!!errors.description && touched.description ? style.errorText : ''}
                             name="description"
-                            placeholder={
-                                language === 'RU'
-                                    ? `Минимум 1 символ\nМаксимум 5000`
-                                    : `Min 1 character\nMax 5000 characters`}
+                            placeholder={t('MIN_1_MAX_5000')}
                             value={values.description}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -155,7 +154,7 @@ export const CreateReviewForm: React.FC<CreateReviewFormPropsType> = ({callBack,
                             <Form.Text className={style.errorText}>{errors.description}</Form.Text>}
                     </Form.Group>
                     <Button type="submit" className={style.btn} disabled={isSubmitting}>
-                        {language === 'RU' ? 'Опубликовать' : 'Publish'}
+                        {t('PUBLISH')}
                     </Button>
                 </Form>
             )}

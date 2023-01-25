@@ -7,18 +7,18 @@ import {Navigate, NavLink} from 'react-router-dom';
 import {RootState, useAppDispatch} from '../../../store/store';
 import {registrationThunk} from '../../../store/reducers/authReducer';
 import {useSelector} from 'react-redux';
-import {LangType} from '../../../store/reducers/appReducer';
 import {SocialBar} from './SocialBar';
+import {useT} from '../../../i18n';
 
 export const Registration: React.FC = () => {
     const isAuth = useSelector<RootState,boolean>(state => state.authReducer.isAuth);
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
-    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
+    const t = useT();
     if(isAuth) return <Navigate to={'/content'}/>
     return (
         <div className={isDarkTheme ? style.auth : `${style.auth} ${style.light}`}>
             <div className={style.item}>
-                <h3>{language === 'RU' ? 'Зарегистрироваться' : 'Sing Up'}</h3>
+                <h3>{t('SIGN_UP_TEXT')}</h3>
                 <RegistrationForm/>
                 <SocialBar/>
             </div>
@@ -27,26 +27,26 @@ export const Registration: React.FC = () => {
 };
 
 const RegistrationForm: React.FC = () => {
+    const t = useT();
     const dispatch = useAppDispatch();
-    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     return (
         <Formik
             initialValues={{email: '', password: '', name: ''}}
             validate={values => {
                 const errors = {email: '', password: '', name: ''};
                 if (!values.name) {
-                    errors.name = 'Name is required';
+                    errors.name = t('NAME_REQUIRED');
                 }
                 if (!values.password) {
-                    errors.password = 'Password is required';
+                    errors.password = t('PASS_REQUIRED');
                 }
 
                 if (!values.email) {
-                    errors.email = 'Email is required';
+                    errors.email = t('EMAIL_REQUIRED');
                 } else if (
                     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
                 ) {
-                    errors.email = 'Invalid email address';
+                    errors.email = t('NOT_VALID_EMAIL');
                 }
                 return errors;
             }}
@@ -72,7 +72,7 @@ const RegistrationForm: React.FC = () => {
                             className={`${style.input} ${!!errors.name && touched.name && style.error}`}
                             type="text"
                             name="name"
-                            placeholder={language === 'RU' ? 'Имя*' : 'Name*'}
+                            placeholder={t('NAME_TEXT')}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.name}
@@ -87,7 +87,7 @@ const RegistrationForm: React.FC = () => {
                             className={`${style.input} ${!!errors.email && touched.email && style.error}`}
                             type="email"
                             name="email"
-                            placeholder={language === 'RU' ? 'Пароль*' : 'Password*'}
+                            placeholder={t('EMAIL_TEXT')}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.email}
@@ -102,7 +102,7 @@ const RegistrationForm: React.FC = () => {
                             className={`${style.input} ${!!errors.password && touched.password && style.error}`}
                             type="password"
                             name="password"
-                            placeholder={language === 'RU' ? 'Пароль*' : 'Password*'}
+                            placeholder={t('PASS_TEXT')}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.password}
@@ -116,12 +116,12 @@ const RegistrationForm: React.FC = () => {
                         type="submit"
                         className={style.button}
                         variant="primary">
-                        {language === 'RU' ? 'Зарегистрироваться' : 'Sing Up'}
+                        {t('SIGN_UP_TEXT')}
                     </Button>
 
 
                     <NavLink to="/login">
-                        {language === 'RU' ? 'Уже есть аккаунт?' : 'Do you have an account?'}
+                        {t('HAVE_ACCOUNT_TEXT')}
                     </NavLink>
                 </form>
             )}

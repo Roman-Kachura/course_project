@@ -7,10 +7,10 @@ import {RootState, useAppDispatch} from '../../../store/store';
 import {getSearchListThunk, SearchListType, SearchParamsType} from '../../../store/reducers/searchReducer';
 import {NavLink} from 'react-router-dom';
 import {Loader} from '../../с9-additions/loader/Loader';
-import {LangType} from '../../../store/reducers/appReducer';
+import {useT} from '../../../i18n';
 
 export const SearchPanel: React.FC<SearchPanelPropsType> = ({callBack}) => {
-    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
+    const t = useT();
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
     const search = useSelector<RootState, SearchParamsType>(state => state.searchListReducer.params);
     const list = useSelector<RootState, SearchListType[]>(state => state.searchListReducer.list);
@@ -55,7 +55,7 @@ export const SearchPanel: React.FC<SearchPanelPropsType> = ({callBack}) => {
         <Form className={isDarkTheme ? style.form : `${style.form} ${style.light}`}>
             <Form.Select value={category} className={style.select} onChange={changeCategory}>
                 <option value="">
-                    {language === 'RU' ? 'ВСЕ КАТЕГОРИИ' : 'ALL CATEGORIES'}
+                    {t('ALL_CATEGORIES')}
                 </option>
                 {
                     categories.map((c, i) => <option key={i} value={c}>{c}</option>)
@@ -70,7 +70,7 @@ export const SearchPanel: React.FC<SearchPanelPropsType> = ({callBack}) => {
                 <Form.Control
                     className={style.input}
                     type="search"
-                    placeholder={language === 'RU' ? '#хэштэг, заголовок' : '#hashtag, title'}
+                    placeholder={t('SEARCH_HASHTAG_TITLE')}
                     value={searchValue}
                     onChange={changeSearchValue}
                 />
@@ -87,7 +87,7 @@ export const SearchPanel: React.FC<SearchPanelPropsType> = ({callBack}) => {
                 </div>}
             </div>
             <Button className={style.searchBtn} variant="primary" onClick={onClickHandler}>
-                {language === 'RU' ? 'ИСКАТЬ' : 'SEARCH'}
+                {t('SEARCH_TEXT')}
             </Button>
         </Form>
     )

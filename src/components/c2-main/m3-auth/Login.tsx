@@ -9,16 +9,17 @@ import {loginThunk} from '../../../store/reducers/authReducer';
 import {useSelector} from 'react-redux';
 import {LangType} from '../../../store/reducers/appReducer';
 import {SocialBar} from './SocialBar';
+import {useT} from '../../../i18n';
 
 export const Login: React.FC = () => {
+    const t = useT();
     const isAuth = useSelector<RootState, boolean>(state => state.authReducer.isAuth);
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
-    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     if (isAuth) return <Navigate to={'/content'}/>
     return (
         <div className={isDarkTheme ? style.auth : `${style.auth} ${style.light}`}>
             <div className={style.item}>
-                <h3>{language === 'RU' ? 'Войти' : 'Sign In'}</h3>
+                <h3>{t('SIGN_IN_TEXT')}</h3>
                 <LoginForm/>
                 <SocialBar/>
             </div>
@@ -27,26 +28,24 @@ export const Login: React.FC = () => {
 }
 
 const LoginForm: React.FC = () => {
+    const t = useT();
     const dispatch = useAppDispatch();
     const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     return (
         <Formik
-            initialValues={{email: '', password: '', name: ''}}
+            initialValues={{email: '', password: ''}}
             validate={values => {
-                const errors = {email: '', password: '', name: ''};
-                if (!values.name) {
-                    errors.name = 'Name is required';
-                }
+                const errors = {email: '', password: ''};
                 if (!values.password) {
-                    errors.password = 'Password is required';
+                    errors.password = t('PASS_REQUIRED');
                 }
 
                 if (!values.email) {
-                    errors.email = 'Email is required';
+                    errors.email = t('EMAIL_REQUIRED');
                 } else if (
                     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
                 ) {
-                    errors.email = 'Invalid email address';
+                    errors.email = t('NOT_VALID_EMAIL');
                 }
                 return errors;
             }}
@@ -72,7 +71,7 @@ const LoginForm: React.FC = () => {
                             className={`${style.input} ${!!errors.email && touched.email && style.error}`}
                             type="email"
                             name="email"
-                            placeholder={language === 'RU' ? 'Почта*' : 'Email*'}
+                            placeholder={t('EMAIL_TEXT')}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.email}
@@ -87,7 +86,7 @@ const LoginForm: React.FC = () => {
                             className={`${style.input} ${!!errors.password && touched.password && style.error}`}
                             type="password"
                             name="password"
-                            placeholder={language === 'RU' ? 'Пароль*' : 'Password*'}
+                            placeholder={t('PASS_TEXT')}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.password}
@@ -101,11 +100,11 @@ const LoginForm: React.FC = () => {
                         type="submit"
                         className={style.button}
                         variant="primary">
-                        {language === 'RU' ? 'Войти' : 'Sing In'}
+                        {t('SIGN_IN_TEXT')}
                     </Button>
 
 
-                    <NavLink to="/registration">{language === 'RU' ? 'Создать аккаунт' : 'Create an account'}</NavLink>
+                    <NavLink to="/registration">{t('CREATE_ACCOUNT_TEXT')}</NavLink>
                 </form>
             )}
         </Formik>

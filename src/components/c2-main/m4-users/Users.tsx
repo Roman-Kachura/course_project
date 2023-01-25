@@ -7,7 +7,8 @@ import {Table} from 'react-bootstrap';
 import style from './Users.module.scss';
 import {Navigate, NavLink} from 'react-router-dom';
 import {AppPagination} from '../../с9-additions/AppPagination';
-import {LangType, setAppStatus} from '../../../store/reducers/appReducer';
+import {setAppStatus} from '../../../store/reducers/appReducer';
+import {useT} from '../../../i18n';
 
 
 export const Users = React.memo(() => {
@@ -30,11 +31,11 @@ export const Users = React.memo(() => {
     />
 });
 const UsersComponent: React.FC<UsersComponentType> = ({data, getUsers, pagesCount, currentPage, user}) => {
+    const t = useT();
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
-    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     useEffect(() => {
         getUsers(currentPage);
-    }, []);
+    }, [currentPage]);
 
     return (
         <div className={style.users}>
@@ -42,13 +43,13 @@ const UsersComponent: React.FC<UsersComponentType> = ({data, getUsers, pagesCoun
                 <thead>
                 <tr>
                     <th>
-                        {language === 'RU' ? 'Имя' : 'Name'}
+                        {t('NAME_TEXT')}
                     </th>
                     <th>
-                        {language === 'RU' ? 'Почта' : 'Email'}
+                        {t('EMAIL_TEXT')}
                     </th>
                     <th>
-                        {language === 'RU' ? 'Роль' : 'Role'}
+                        {t('ROLE_TEXT')}
                     </th>
                 </tr>
                 </thead>
@@ -57,7 +58,7 @@ const UsersComponent: React.FC<UsersComponentType> = ({data, getUsers, pagesCoun
                     <tr key={u.id}>
                         <td><NavLink to={`/users/${u.id}`}>{u.name}</NavLink></td>
                         <td>{u.email}</td>
-                        <td>{u.role}</td>
+                        <td>{u.role === 'ADMIN' ? t('ADMIN_ROLE_TEXT') : t('USER_ROLE_TEXT')}</td>
                     </tr>
                 )}
                 </tbody>

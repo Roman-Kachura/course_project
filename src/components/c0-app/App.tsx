@@ -12,7 +12,6 @@ import {SearchType} from '../../api/reviewApi';
 import {getReviewsThunk} from '../../store/reducers/reviewsReducer';
 import {NavLink} from 'react-router-dom';
 import {getRedirectResultThunk} from '../../store/reducers/authReducer';
-import {UserResponseType} from '../../api/authApi';
 
 
 export const App: React.FC = () => {

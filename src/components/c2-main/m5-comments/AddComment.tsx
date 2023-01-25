@@ -4,10 +4,10 @@ import style from './Comments.module.scss';
 import {RootState, useAppDispatch} from '../../../store/store';
 import {createCommentThunk} from '../../../store/reducers/commentsReducer';
 import {useSelector} from 'react-redux';
-import {LangType} from '../../../store/reducers/appReducer';
+import {useT} from '../../../i18n';
 
 export const AddComment: React.FC<AddCommentPropsType> = ({authorID, reviewID}) => {
-    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
+    const t = useT();
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
     const dispatch = useAppDispatch();
     const [value, setValue] = useState('');
@@ -28,7 +28,7 @@ export const AddComment: React.FC<AddCommentPropsType> = ({authorID, reviewID}) 
                 as="textarea"
                 rows={3}
                 className={style.textarea}
-                placeholder={language === 'RU' ? 'Ваш комментарий...' : 'Your comment...'}
+                placeholder={t('YOUR_COMMENT')}
                 value={value}
                 onChange={changeValue}
                 onKeyDown={onKeyPressHandler}
@@ -38,7 +38,7 @@ export const AddComment: React.FC<AddCommentPropsType> = ({authorID, reviewID}) 
                 {value.length}/1000
             </div>
             <Button onClick={addComment}>
-                {language === 'RU' ? 'ОТПРАВИТЬ' : 'SEND'}
+                {t('SEND_TEXT')}
             </Button>
         </div>
 

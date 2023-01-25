@@ -8,6 +8,7 @@ import {UserResponseType} from '../../../api/authApi';
 import {deleteItemThunk} from '../../../store/reducers/showReviewReducer';
 import {useAppDispatch} from '../../../store/store';
 import {LangType} from '../../../store/reducers/appReducer';
+import {useT} from '../../../i18n';
 
 export const ReviewCover: React.FC<ReviewCoverPropsType> = (
     {
@@ -26,7 +27,7 @@ export const ReviewCover: React.FC<ReviewCoverPropsType> = (
         language
     }
 ) => {
-
+    const t = useT();
     const dispatch = useAppDispatch();
     const link = useRef<HTMLAnchorElement>(null);
     const hashtagClickHandler = (e: MouseEvent<HTMLAnchorElement>) => {
@@ -53,10 +54,10 @@ export const ReviewCover: React.FC<ReviewCoverPropsType> = (
                 user && user.id === authorID &&
                 <div className={style.btnBlock}>
                     <Button className={style.btn} variant="outline-success" onClick={getToEditMode}>
-                        {language === 'RU' ? 'Изменить' : 'Edit'}
+                        {t('EDIT_TEXT')}
                     </Button>
                     <Button className={style.btn} variant="outline-danger" onClick={deleteItem}>
-                        {language === 'RU' ? 'Удалить' : 'Delete'}
+                        {t('DELETE_TEXT')}
                     </Button>
                 </div>
             }
@@ -64,10 +65,10 @@ export const ReviewCover: React.FC<ReviewCoverPropsType> = (
                 user && user.id !== authorID && user.role === 'ADMIN' &&
                 <div className={style.btnBlock}>
                     <Button className={style.btn} variant="outline-success" onClick={getToEditMode}>
-                        {language === 'RU' ? 'Изменить' : 'Edit'}
+                        {t('EDIT_TEXT')}
                     </Button>
                     <Button className={style.btn} variant="outline-danger" onClick={deleteItem}>
-                        {language === 'RU' ? 'Удалить' : 'Delete'}
+                        {t('DELETE_TEXT')}
                     </Button>
                 </div>
             }
@@ -80,28 +81,15 @@ export const ReviewCover: React.FC<ReviewCoverPropsType> = (
                     <div className={style.rating}>
                         <Rating max={1} readOnly={true} value={1}/>
                         <span className={style.text}>
-                            {
-                                language === 'RU'
-                                    ? `ОЦЕНКА: ${rating} / ОЦЕНКА АВТОРА: ${authorRating}`
-                                    : `RATING: ${rating} / AUTHOR RATING: ${authorRating}`
-                            }
+                            {`${t('RATING')}: ${rating} / ${t('AUTHOR_RATING')}: ${authorRating}`}
                         </span>
                     </div>
                     <div className={style.product}>
-                        {
-                            language === 'RU'
-                                ? `ПРОДУКТ: ${product}`
-                                : `PRODUCT: ${product}`
-                        }
+                        {`${t('PRODUCT_TEXT')}: ${product}`}
                     </div>
 
                     <div className={style.category}>
-                        {
-                            language === 'RU'
-                                ? `КАТЕГОРИЯ: ${category}`
-                                : `category: ${category}`
-                        }
-
+                        {`${t('CATEGORY_TEXT')}: ${category}`}
                     </div>
                     <div className={style.hashtags}>
                         {
@@ -118,7 +106,7 @@ export const ReviewCover: React.FC<ReviewCoverPropsType> = (
                 </div>
                 {
                     created && <div className={style.created}>
-                        {language === 'RU' ? 'ОПУБЛИКОВАНО' : 'CREATED'}: {rewriteDate(created)}</div>
+                        {t('CREATED_TEXT')}: {rewriteDate(created)}</div>
                 }
             </div>
             <NavLink to={`/reviews/edit/${id}`} ref={link}/>

@@ -13,14 +13,14 @@ import {AddComment} from '../../m5-comments/AddComment';
 import {UserResponseType} from '../../../../api/authApi';
 import {rewriteDate} from '../../../../features/rewriteDate';
 import {getCommentsThunk} from '../../../../store/reducers/commentsReducer';
-import {LangType} from '../../../../store/reducers/appReducer';
 import {ItemText} from './ItemText';
 import {changeReviewTextThunk} from '../../../../store/reducers/reviewsReducer';
+import {useT} from '../../../../i18n';
 
 export const ReviewItem = React.memo(() => {
+    const t = useT();
     const {id} = useParams();
     const dispatch = useAppDispatch();
-    const language = useSelector<RootState, LangType>(state => state.appReducer.language);
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
     const item = useSelector<RootState, ReviewType>(state => state.showReviewReducer.item);
     const isAuth = useSelector<RootState, boolean>(state => state.authReducer.isAuth);
@@ -100,31 +100,31 @@ export const ReviewItem = React.memo(() => {
                         {
                             isAuth && feedbacks !== null && feedbacks !== undefined &&
                             <div className={style.feedbacks}>
-                                {language === 'RU' ? 'Оценок' : 'People rated'}: <b>{feedbacks}</b>
+                                {t('RATED')}: <b>{feedbacks}</b>
                                 {user.id === authorID ? null : !!myRate ?
-                                    <span> / {language === 'RU' ? 'Ваша оценка' : 'Your rating'}: <b>{myRate}</b></span> :
-                                    <span> / {language === 'RU' ? 'Вы не ставили оценку этому обзору!' : `You didn't rate this review!`}</span>}
+                                    <span> / {t('YOUR_RATING')}: <b>{myRate}</b></span> :
+                                    <span> / {t('NOT_RATED')}</span>}
                             </div>
                         }
                         {product &&
-                            <div className={style.product}>{language === 'RU' ? 'ПРОДУКТ' : 'PRODUCT'}: {product}</div>}
+                            <div className={style.product}>{t('PRODUCT_TEXT')}: {product}</div>}
                         {author && authorRating &&
                             <div className={style.author}>
-                                {language === 'RU' ? 'АВТОР: ' : 'AUTHOR: '}
+                                {t('AUTHOR_TEXT')}
                                 <NavLink
-                                    to={`/users/${authorID}`}>@{author}</NavLink> / {language === 'RU' ? ' ОЦЕНКА АВТОРА' : ' AUTHOR RATING'}: {authorRating}
+                                    to={`/users/${authorID}`}>@{author}</NavLink> / {t('AUTHOR_RATING')}: {authorRating}
                             </div>
                         }
                         {category && <div
-                            className={style.category}>{language === 'RU' ? 'КАТЕГОРИЯ' : 'CATEGORY'}: {category}</div>}
+                            className={style.category}>{t('CATEGORY_TEXT')}: {category}</div>}
                         {hashtags && <div className={style.hashtags}>{hashtags.join(' ')}</div>}
                     </div>
                     {created && <div
-                        className={style.created}>{language === 'RU' ? 'ОПУБЛИКОВАНО' : 'CREATED'}: {rewriteDate(created)}</div>}
+                        className={style.created}>{t('CREATED_TEXT')}: {rewriteDate(created)}</div>}
                 </div>
             </Figure>
             {text && <div className={style.description}>
-                <h4>{language === 'RU' ? 'Описание' : 'Description'}</h4>
+                <h4>{t('DESCRIPTION_TEXT')}</h4>
                 {(isAuth && (user.role === 'ADMIN' || user.id === authorID)) ?
                     <ItemText text={text} callback={onChangeText}/> :
                     <div className={style.text}>{text}</div>}
