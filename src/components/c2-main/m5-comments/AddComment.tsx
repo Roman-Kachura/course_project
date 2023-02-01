@@ -1,21 +1,19 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {Button, Form} from 'react-bootstrap';
 import style from './Comments.module.scss';
-import {RootState, useAppDispatch} from '../../../store/store';
-import {createCommentThunk} from '../../../store/reducers/commentsReducer';
+import {RootState} from '../../../store/store';
 import {useSelector} from 'react-redux';
 import {useT} from '../../../i18n';
 
-export const AddComment: React.FC<AddCommentPropsType> = ({authorID, reviewID}) => {
+export const AddComment: React.FC<AddCommentPropsType> = ({authorID, reviewID, callBack}) => {
     const t = useT();
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
-    const dispatch = useAppDispatch();
     const [value, setValue] = useState('');
     const l = value.length;
     const changeValue = (e: ChangeEvent<HTMLTextAreaElement>) => setValue(e.currentTarget.value);
     const addComment = () => {
         if (l > 0 && l < 1001) {
-            dispatch(createCommentThunk({reviewID, authorID, text: value}));
+            callBack(value)
         }
     }
     const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -48,4 +46,6 @@ export const AddComment: React.FC<AddCommentPropsType> = ({authorID, reviewID}) 
 type AddCommentPropsType = {
     authorID: string
     reviewID: string
+
+    callBack: (text: string) => void
 };

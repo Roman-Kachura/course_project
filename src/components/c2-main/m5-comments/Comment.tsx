@@ -2,23 +2,18 @@ import React from 'react';
 import {CommentType} from '../../../api/commentsApi';
 import style from './Comments.module.scss';
 import {rewriteDate} from '../../../features/rewriteDate';
-import {RootState, useAppDispatch} from '../../../store/store';
+import {RootState} from '../../../store/store';
 import {Button} from 'react-bootstrap';
-import {deleteCommentThunk} from '../../../store/reducers/commentsReducer';
 import {useSelector} from 'react-redux';
-import {LangType} from '../../../store/reducers/appReducer';
 import {useT} from '../../../i18n';
 
-export const Comment: React.FC<CommentType & { userID?: string }> = (
-    {id, text, created, authorID, reviewID, userID, author}
+export const Comment: React.FC<CommentType & { userID?: string, deleteCommentCallBack: (cid: string) => void }> = (
+    {id, text, created, authorID, userID, author, deleteCommentCallBack}
 ) => {
     const t = useT();
-    const dispatch = useAppDispatch();
     const isDarkTheme = useSelector<RootState, boolean>(state => state.appReducer.isDarkTheme);
 
-    const onClickHandler = () => {
-        dispatch(deleteCommentThunk({id, authorID}));
-    }
+    const onClickHandler = () => deleteCommentCallBack(id);
     return (
         <div className={isDarkTheme ? style.item : `${style.item} ${style.light}`}>
             <div className={style.image}>

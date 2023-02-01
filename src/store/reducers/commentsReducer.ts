@@ -1,24 +1,32 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {setAppStatus} from './appReducer';
-import {commentsApi, CommentType, DeleteCommentValuesType} from '../../api/commentsApi';
+import {commentsApi, CommentType} from '../../api/commentsApi';
 
 const commentsInitialState: CommentsInitialStateType = {
     comments: [],
     page: 1,
     count: 0,
-    pagesCount:1
+    pagesCount: 1
 };
 
-export const createCommentThunk = createAsyncThunk('create-comment-thunk', async (arg: { reviewID: string, authorID: string, text: string }, thunkAPI) => {
-    thunkAPI.dispatch(setAppStatus('loading'));
+export const messageHandlerThunk = createAsyncThunk('message-handler-thunk', async (arg: { message: string }, thunkAPI) => {
     try {
-        await commentsApi.createComment(arg);
+        const m = JSON.parse(arg.message);
+        switch (m.method) {
+            case 'connect': {
+                return thunkAPI.dispatch(setComments(m.comments));
+            }
+            case 'create-comment': {
+                return thunkAPI.dispatch(setComments(m.comments));
+            }
+            case 'delete-comment': {
+                return thunkAPI.dispatch(setComments(m.comments));
+            }
+        }
     } catch (e) {
         throw e;
-    } finally {
-        thunkAPI.dispatch(setAppStatus('stop'));
     }
 });
+
 
 export const getCommentsThunk = createAsyncThunk('get-comments', async (arg: { id: string, page: number }, thunkAPI) => {
     try {
@@ -28,18 +36,6 @@ export const getCommentsThunk = createAsyncThunk('get-comments', async (arg: { i
         throw e;
     }
 });
-
-export const deleteCommentThunk = createAsyncThunk('get-comments', async (arg: DeleteCommentValuesType, thunkAPI) => {
-    thunkAPI.dispatch(setAppStatus('loading'));
-    try {
-        await commentsApi.deleteComment(arg);
-    } catch (e) {
-        throw e;
-    } finally {
-        thunkAPI.dispatch(setAppStatus('stop'));
-    }
-});
-
 
 const commentsSlice = createSlice({
     name: 'comments',
@@ -62,5 +58,5 @@ type CommentsInitialStateType = {
     comments: CommentType[]
     count: number
     page: number
-    pagesCount:number
+    pagesCount: number
 }

@@ -5,12 +5,6 @@ export const commentsApi = {
     getComments(id: string, page: number) {
         return $api.get<AxiosResponse, AxiosResponse<CommentType[]>>(`/comments/${id}?page=${page}`);
     },
-    createComment(data: CreateCommentValuesType) {
-        return $api.post<AxiosResponse, AxiosResponse<CommentType>>(`/comments`, data);
-    },
-    deleteComment(data: DeleteCommentValuesType) {
-        return $api.delete<AxiosResponse, AxiosResponse<CommentType>>(`/comments/${data.id}/${data.authorID}`);
-    }
 }
 
 export type CommentType = {
@@ -27,6 +21,4 @@ export type AuthorType = {
     name: string,
     photo: string
 }
-
-export type CreateCommentValuesType = { reviewID: string, authorID: string, text: string };
 export type DeleteCommentValuesType = { id: string, authorID: string };

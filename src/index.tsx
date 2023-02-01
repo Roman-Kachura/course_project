@@ -7,7 +7,7 @@ import {BrowserRouter, HashRouter} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {store} from './store/store';
 import './api/firebaseApi';
-import { LangProvider } from "./i18n/index";
+import { LangProvider } from './i18n';
 import {App} from './components/c0-app/App';
 
 const root = ReactDOM.createRoot(
