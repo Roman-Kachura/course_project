@@ -1,8 +1,8 @@
 import axios, {AxiosRequestConfig} from 'axios';
-// https://course-server.herokuapp.com/
+// https://course-server-sr6p.onrender.com/
 // http://localhost:5000/
 export const $api = axios.create({
-    baseURL: 'https://course-server.herokuapp.com/',
+    baseURL: 'https://course-server-sr6p.onrender.com/',
     withCredentials: true
 });
 

@@ -12,7 +12,7 @@ export class LanguageKeys {
     public SETTING = "Setting";
     public LOGOUT = "logout";
     public LOGIN = "login";
-    public SELECT_FILE = "SELECT FILE";
+    public SELECT_FILE = "Choose files...";
     public YOUR_RATING = "Your rating:";
     public CREATE_REVIEW_TITLE_ERROR = "Title length must be greater than 0 and less than 100!";
     public CREATE_REVIEW_PRODUCT_ERROR = "Product length must be greater than 0 and less than 100!";

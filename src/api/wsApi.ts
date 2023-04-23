@@ -1,6 +1,6 @@
-// 'wss://course-server.herokuapp.com/'
+// 'wss://course-server-sr6p.onrender.com/
 // 'ws://localhost:5000/'
-export const $ws = 'wss://course-server.herokuapp.com/';
+export const $ws = 'wss://course-server-sr6p.onrender.com/';
 
 export const wsApi = {
     createSocket(url: string) {
