@@ -15,13 +15,13 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <React.StrictMode>
-        <HashRouter>
+        <BrowserRouter>
             <Provider store={store}>
                 <LangProvider>
                     <App/>
                 </LangProvider>
             </Provider>
-        </HashRouter>
+        </BrowserRouter>
     </React.StrictMode>
 );
 reportWebVitals();
