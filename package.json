@@ -1,6 +1,6 @@
 {
-  "name": "course_project",
-  "homepage": "https://roman-kachura.github.io/course_project/",
+  "name": "reviews_app",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
